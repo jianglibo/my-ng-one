@@ -1,6 +1,9 @@
 import { TestBed, async } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
+import {HttpModule, Http, ConnectionBackend, BaseRequestOptions, RequestOptions} from '@angular/http';
+import { DataStoreService } from './data-store.service';
+import {MockBackend, MockConnection} from '@angular/http/testing';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -8,6 +11,10 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      providers: [DataStoreService,
+         Http,
+         {provide: ConnectionBackend, useClass: MockBackend},
+         {provide: RequestOptions, useClass: BaseRequestOptions}]
     }).compileComponents();
   }));
 
@@ -20,13 +27,13 @@ describe('AppComponent', () => {
   it(`should have as title 'app'`, async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app');
+    expect(app.title).toEqual('My First Angular App');
   }));
 
   it('should render title in a h1 tag', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to app!');
+    expect(compiled.querySelector('h1').textContent).toContain('Welcome to My First Angular App!');
   }));
 });
