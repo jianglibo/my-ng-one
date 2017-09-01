@@ -22,16 +22,16 @@ function createInstance<A extends Animal>(c: new () => A): A {
     return new c();
 }
 
-fdescribe('new usage.', () => {
+describe('new usage.', () => {
     it('new should work', () => {
-    let c = new (() => {});
+    const c = new (() => {});
     console.log(typeof c);
-    let o = new c();
-    console.log(typeof o);
+    // let o = new c();
+    // console.log(typeof o);
 
-    c = new ((a: number) => {})(1);
-    o = new c();
-    console.log(typeof c);
+    // c = new ((a: number) => {})(1);
+    // const o = new c();
+    // console.log(typeof c);
     const nt: string = createInstance(Lion).keeper.nametag;
     const bt: boolean = createInstance(Bee).keeper.hasMask;
     });

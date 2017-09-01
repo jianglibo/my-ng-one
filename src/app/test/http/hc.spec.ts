@@ -59,10 +59,4 @@ describe('httpclient usage.', () => {
     // Finally, assert that there are no outstanding requests.
     httpMock.verify();
     }));
-//   it('should be created', (done: any) => {
-//         hc.get('/jsonapi/users').subscribe(data => {
-//             expect(data).toBe({a: 1});
-//             done();
-//         });
-//   });
 });
