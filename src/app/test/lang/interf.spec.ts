@@ -1,5 +1,5 @@
 
-fdescribe('interface usage.', () => {
+describe('interface usage.', () => {
     it('type should work.', () => {
         interface NumberDictionary {
             length: number;    // ok, length is a number

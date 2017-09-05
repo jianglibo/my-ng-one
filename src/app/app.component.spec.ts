@@ -2,7 +2,6 @@ import { TestBed, async } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
 import {HttpModule, Http, ConnectionBackend, BaseRequestOptions, RequestOptions} from '@angular/http';
-import { DataStoreService } from './data-store.service';
 import {MockBackend, MockConnection} from '@angular/http/testing';
 
 describe('AppComponent', () => {
@@ -11,7 +10,7 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
-      providers: [DataStoreService,
+      providers: [
          Http,
          {provide: ConnectionBackend, useClass: MockBackend},
          {provide: RequestOptions, useClass: BaseRequestOptions}]
