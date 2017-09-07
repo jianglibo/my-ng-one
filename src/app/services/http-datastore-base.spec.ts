@@ -2,20 +2,20 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {HttpErrorResponse } from '@angular/common/http';
-import { HttpDatastoreService } from './http-datastore.service';
 import { LoginAttempt } from '../dto/login-attempt';
+import { HttpDatastoreBase } from './http-datastore-base';
 
 fdescribe('HttpDatastoreService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [HttpDatastoreService]
+      providers: [HttpDatastoreBase]
     });
   });
 
-  it('should be created', inject([HttpDatastoreService], (service: HttpDatastoreService) => {
+  it('should be created', inject([HttpDatastoreBase], (service: HttpDatastoreBase) => {
     expect(service).toBeTruthy();
-    service.findAll(LoginAttempt, {}).subscribe(data => expect(data['name']).toEqual('Test Data'), err => {
+    service.findAll(LoginAttempt).subscribe(data => expect(data['name']).toEqual('Test Data'), err => {
       console.log(err);
     });
   }));

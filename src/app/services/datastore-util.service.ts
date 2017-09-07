@@ -9,7 +9,7 @@ interface PageNumberSize {number: number; size: number; }
 interface PageOffsetLimit {offset: number; limit: number; }
 interface PageCursor {cursor: number; }
 
-type Pager = PageNumberSize | PageOffsetLimit | PageCursor;
+export type Pager = PageNumberSize | PageOffsetLimit | PageCursor;
 
 function getPagerParams(page: Pager): string {
     let tpage: Pager;

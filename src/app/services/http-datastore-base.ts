@@ -4,13 +4,28 @@ import { BaseDto } from '../dto/base-dto';
 import { Observable } from 'rxjs/Observable';
 import { ListResult } from './list-result';
 import { HttpClient } from '@angular/common/http';
+import { DatastoreUtilService, Pager } from './datastore-util.service';
 
-@Injectable()
-export class HttpDatastoreService implements DataStore {
+export class HttpDatastoreBase implements DataStore {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private dutil: DatastoreUtilService,
+    private baseUrl: string,
+    private pageSize = 10) { }
 
-  findAll<T extends BaseDto>(dtoType: DtoType<T>, params?: any): Observable<ListResult<T>> {
+  findAll<T extends BaseDto>(dtoType: DtoType<T>,
+    page?: Pager,
+    sort?: {fname: keyof T, descending: boolean}[],
+    filter?: {fname: keyof T, value: any}[],
+    params?: any): Observable<ListResult<T>> {
+    this.http.get(this.dutil.getListUrl(dtoType, null, null, null, '/jsonapi'), {observe: 'response'}).subscribe(resp => {
+      // Here, resp is of type HttpResponse<MyJsonData>.
+      // You can inspect its headers:
+      console.log(resp.headers.get('X-Custom-Header'));
+      // And access the body directly, which is typed as MyJsonData as requested.
+      // console.log(resp.body.someField);
+    });
+
     const e = new Error('Method not implemented.');
     throw e;
   }
