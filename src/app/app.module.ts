@@ -10,7 +10,7 @@ import {HttpModule} from '@angular/http';
 
 import 'hammerjs';
 import { JsonApiModule } from 'angular2-jsonapi';
-import { DataStoreService } from './data-store.service';
+import { DataStoreService } from './services/data-store.service';
 
 // An NgModule is a class adorned with the @NgModule decorator function
 @NgModule({

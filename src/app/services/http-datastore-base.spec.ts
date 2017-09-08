@@ -5,7 +5,7 @@ import {HttpErrorResponse } from '@angular/common/http';
 import { LoginAttempt } from '../dto/login-attempt';
 import { HttpDatastoreBase } from './http-datastore-base';
 
-fdescribe('HttpDatastoreService', () => {
+describe('HttpDatastoreService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
