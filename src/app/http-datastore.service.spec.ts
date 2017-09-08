@@ -9,14 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/reduce';
 import { JsonApiError } from './services/http-datastore-base';
 import { HttpErrorResponse } from '@angular/common/http';
-
-const loginErrorBody = {
-  'errors' : [ {
-    'code' : 'E4001000',
-    'title' : 'org.springframework.security.core.AuthenticationException',
-    'detail' : 'Bad credentials'
-  } ]
-};
+import { LOGIN_FAIL_BODY } from './fixtures/loginfailure';
 
 fdescribe('HttpDatastoreService', () => {
   beforeEach(() => {
@@ -29,43 +22,34 @@ fdescribe('HttpDatastoreService', () => {
   it('rxjs of.', () => {
     Observable.of(1, 2, 3).reduce((x, y) => x + y).subscribe(v => expect(v).toBe(6));
     Observable.of('a', 'b', 'c').reduce((x, y) => x + y).subscribe(v => expect(v).toBe('abc'));
-    function c() {}
-    let o = {c: c};
+    function c() { }
+    let o = { c: c };
     expect('c' in o).toBeTruthy();
   });
 
-  it('should be created', inject([HttpDatastoreService, HttpTestingController],
-     (service: HttpDatastoreService, httpMock: HttpTestingController) => {
-    expect(service).toBeTruthy();
-    // service.findAll(LoginAttempt).subscribe(data => expect(data['name']).toEqual('Test Data'), (err: HttpErrorResponse) => {
-    //   console.log(err);
-    //   let errBody = err.error as {errors: Array<JsonApiError>};
-    //   expect([] instanceof Array).toBeTruthy();
-    //   expect('length' in [1, 2]).toBeTruthy();
-    //   expect(Symbol.iterator in [1, 2]).toBeTruthy();
-    //   expect(errBody.errors).toBeTruthy();
-    //   expect(errBody.errors.length).toBe(1);
-    //   expect(errBody.errors[0].code).toBe('E4001000');
-    //   expect(typeof errBody.errors).toBe('E4001000');
-    //   expect(err.status).toBe(400);
-    //   expect(err.statusText).toBe('xxx');
-    // });
+  it('should handle 4xx response', inject([HttpDatastoreService, HttpTestingController],
+    (service: HttpDatastoreService, httpMock: HttpTestingController) => {
+      expect(service).toBeTruthy();
 
-    service.findAll(LoginAttempt).subscribe(data => expect(data['name']).toEqual('Test Data'), (err: JsonApiError[]) => {
-      console.log(err);
-      // let errBody = err.error as {errors: Array<JsonApiError>};
-      // expect([] instanceof Array).toBeTruthy();
-      // expect('length' in [1, 2]).toBeTruthy();
-      // expect(Symbol.iterator in [1, 2]).toBeTruthy();
-      // expect(errBody.errors).toBeTruthy();
-      // expect(errBody.errors.length).toBe(1);
-      // expect(errBody.errors[0].code).toBe('E4001000');
-      // expect(typeof errBody.errors).toBe('E4001000');
-      // expect(err.status).toBe(400);
-      // expect(err.statusText).toBe('xxx');
-    });
-    const req = httpMock.expectOne('/jsonapi/loginAttempts?page[offset]=0&page[limit]=10');
-    req.flush(loginErrorBody, {status: 400, statusText: 'xxx'});
-    httpMock.verify();
-  }));
+      service.findAll(LoginAttempt).subscribe(data => expect(data['name']).toEqual('Test Data'),
+        (err: JsonApiError[]) => {
+          expect(err.length).toBe(1);
+          expect(err[0].code).toBe(LOGIN_FAIL_BODY.errors[0].code);
+        });
+      const req = httpMock.expectOne('/jsonapi/loginAttempts?page[offset]=0&page[limit]=10');
+      req.flush(LOGIN_FAIL_BODY, { status: 400, statusText: 'xxx' });
+      httpMock.verify();
+    }));
+
+    it('should handle list response', inject([HttpDatastoreService, HttpTestingController],
+      (service: HttpDatastoreService, httpMock: HttpTestingController) => {
+        service.findAll(LoginAttempt).subscribe(data => expect(data['name']).toEqual('Test Data'),
+          (err: JsonApiError[]) => {
+            expect(err.length).toBe(1);
+            expect(err[0].code).toBe(LOGIN_FAIL_BODY.errors[0].code);
+          });
+        const req = httpMock.expectOne('/jsonapi/loginAttempts?page[offset]=0&page[limit]=10');
+        req.flush(LOGIN_FAIL_BODY, { status: 400, statusText: 'xxx' });
+        httpMock.verify();
+      }));
 });
