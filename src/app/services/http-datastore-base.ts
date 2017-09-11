@@ -8,6 +8,8 @@ import 'rxjs/add/observable/throw';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { DatastoreUtilService, Pager } from './datastore-util.service';
 import { ListResult } from '../dto/list-result';
+import { ListResponse } from '../dto/list-response';
+import { JsonapiObject, AttributesBase } from '../dto/jsonapi-object';
 
 export interface JsonApiError {
   code: string;
@@ -24,19 +26,19 @@ export class HttpDatastoreBase implements DataStore {
     private baseUrl: string,
     private defaultPager: Pager = {offset: 0, limit: 10}) {}
 
-  findAll<T extends BaseDto>(dtoType: DtoType<T>,
+  findAll<E extends AttributesBase, T extends JsonapiObject<E>>(dtoType: DtoType<E, T>,
     page?: Pager,
-    sort?: {fname: keyof T, descending: boolean}[],
-    filter?: {fname: keyof T, value: any}[],
-    params?: any): Observable<ListResult<T>> {
+    sort?: {fname: keyof E, descending: boolean}[],
+    filter?: {fname: keyof E, value: any}[],
+    params?: any): Observable<ListResponse<E, T>> {
       if (page == null) {
         page = this.defaultPager;
       }
       let url = this.dutil.getListUrl(dtoType, page, sort, filter, this.baseUrl);
       console.log(url);
-      return this.http.get<T[]>(url, {observe: 'response'}).map(resp => {
+      return this.http.get<ListResponse<E, T>>(url, {observe: 'response'}).map(resp => {
         let r = resp.body;
-        return new ListResult(r);
+        return r;
       }).catch((err: HttpErrorResponse) => {
         // err.
         if (err.error && err.error.errors && err.error.errors instanceof Array) {
@@ -55,16 +57,16 @@ export class HttpDatastoreBase implements DataStore {
     // const e = new Error('Method not implemented.');
     // throw e;
   }
-  findRecord<T extends BaseDto>(modelType: DtoType<T>, id: number, params?: any): Observable<T> {
+  findRecord<E extends AttributesBase, T extends JsonapiObject<E>>(modelType: DtoType<E, T>, id: number, params?: any): Observable<T> {
     throw new Error('Method not implemented.');
   }
-  createRecord<T extends BaseDto>(modelType: DtoType<T>, data?: any): T {
+  createRecord<E extends AttributesBase, T extends JsonapiObject<E>>(modelType: DtoType<E, T>, data?: any): T {
     throw new Error('Method not implemented.');
   }
-  saveRecord<T extends BaseDto>(attributesMetadata: any, model?: T, params?: any): Observable<T> {
+  saveRecord<E extends AttributesBase, T extends JsonapiObject<E>>(attributesMetadata: any, model?: T, params?: any): Observable<T> {
     throw new Error('Method not implemented.');
   }
-  deleteRecord<T extends BaseDto>(modelType: DtoType<T>, id: string): Observable<Response> {
+  deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(modelType: DtoType<E, T>, id: string): Observable<Response> {
     throw new Error('Method not implemented.');
   }
 

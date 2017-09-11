@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { DtoType } from './data-store';
-import { BaseDto } from '../dto/base-dto';
 import 'reflect-metadata';
 import { DtoDescriptionKey } from '../dto/dto-description';
 import { assertNever } from '../util/util';
+import { AttributesBase, JsonapiObject } from '../dto/jsonapi-object';
 
 interface PageNumberSize {number: number; size: number; }
 interface PageOffsetLimit {offset: number; limit: number; }
@@ -47,10 +47,10 @@ export class DatastoreUtilService {
 
   constructor() { }
 
-  getListUrl<T extends BaseDto> (dtoType: DtoType<T>,
+  getListUrl<E extends AttributesBase, T extends JsonapiObject<E>> (dtoType: DtoType<E, T>,
      page: Pager,
-     sort: {fname: keyof T, descending: boolean}[],
-     filter: {fname: keyof T, value: any}[],
+     sort: {fname: keyof E, descending: boolean}[],
+     filter: {fname: keyof E, value: any}[],
      baseUrl = '/'): string {
     if (!baseUrl.endsWith('/')) {
       baseUrl = baseUrl + '/';
@@ -76,7 +76,7 @@ export class DatastoreUtilService {
     return result;
   }
 
-  getSingleUrl<T extends BaseDto> (dtoType: DtoType<T>, id: number, baseUrl = '/'): string {
+  getSingleUrl<E extends AttributesBase, T extends JsonapiObject<E>> (dtoType: DtoType<E, T>, id: number, baseUrl = '/'): string {
     return this.getListUrl(dtoType, undefined, [], [], baseUrl) + '/' + id;
   }
 }

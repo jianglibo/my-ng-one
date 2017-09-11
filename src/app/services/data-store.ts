@@ -1,22 +1,22 @@
-import { BaseDto } from '../dto/base-dto';
 
 import { Observable } from 'rxjs/Observable';
 import { Pager } from './datastore-util.service';
-import { ListResult } from '../dto/list-result';
+import { JsonapiObject, AttributesBase } from '../dto/jsonapi-object';
+import { ListResponse } from '../dto/list-response';
 
-export interface DtoType<T extends BaseDto> {
+export interface DtoType<E extends AttributesBase, T extends JsonapiObject<E>> {
     new(datastore: DataStore, data: any): T;
 }
 
 export interface DataStore {
-    findAll<T extends BaseDto>(dtoType: DtoType<T>,
+    findAll<E extends AttributesBase, T extends JsonapiObject<E>>(dtoType: DtoType<E, T>,
         page: Pager,
-        sort: {fname: keyof T, descending: boolean}[],
-        filter: {fname: keyof T, value: any}[],
-        params?: any): Observable<ListResult<T>>;
+        sort: {fname: keyof E, descending: boolean}[],
+        filter: {fname: keyof E, value: any}[],
+        params?: any): Observable<ListResponse<E, T>>;
 
-    findRecord<T extends BaseDto>(modelType: DtoType<T>, id: number, params?: any): Observable<T>;
-    createRecord<T extends BaseDto>(modelType: DtoType<T>, data?: any): T;
-    saveRecord<T extends BaseDto>(attributesMetadata: any, model?: T, params?: any): Observable<T>;
-    deleteRecord<T extends BaseDto>(modelType: DtoType<T>, id: string): Observable<Response>;
+    findRecord<E extends AttributesBase, T extends JsonapiObject<E>>(modelType: DtoType<E, T>, id: number, params?: any): Observable<T>;
+    createRecord<E extends AttributesBase, T extends JsonapiObject<E>>(modelType: DtoType<E, T>, data?: any): T;
+    saveRecord<E extends AttributesBase, T extends JsonapiObject<E>>(attributesMetadata: any, model?: T, params?: any): Observable<T>;
+    deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(modelType: DtoType<E, T>, id: string): Observable<Response>;
 }

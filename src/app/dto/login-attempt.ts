@@ -1,16 +1,12 @@
-import { BaseDto } from './base-dto';
-import {DtoDescription} from './dto-description';
+import { Relationship, JsonapiObject } from './jsonapi-object';
+import { DtoDescription } from './dto-description';
+import { UserAttributes } from './user-attributes';
+import { LoginAttemptAttributes } from './login-attempt-attributes';
 
 @DtoDescription({
     nameInUrl: 'loginAttempts',
 })
-export class LoginAttempt extends BaseDto {
-    username: string;
-    password: string;
-    provider: string;
-    success: boolean;
-    jwtToken: string;
-    sessionId: string;
-    user: number;
-    remoteAddress: string;
+export class LoginAttempt extends JsonapiObject<LoginAttemptAttributes>  {
+    attributes: LoginAttemptAttributes;
+    relationships: { a: Relationship; };
 }

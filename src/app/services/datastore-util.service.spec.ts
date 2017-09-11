@@ -27,7 +27,8 @@ describe('DatastoreUtilService', () => {
 
     url = service.getListUrl(LoginAttempt,
       null ,
-      [{fname: 'username', descending: true}, {fname: 'password', descending: false}],
+      // [{fname: 'username', descending: true}, {fname: 'password', descending: false}],
+      [],
       [{fname: 'username', value: 'a'}], '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts?sort=-username,password&filter[username]=a');
 
