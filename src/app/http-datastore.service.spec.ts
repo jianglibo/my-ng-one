@@ -12,6 +12,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { LOGIN_FAIL_BODY } from './fixtures/loginfailure';
 import { USERS_BODY } from './fixtures/usersgetlist';
 import { User } from './dto/user';
+import { UserAttributes } from './dto/user-attributes';
+import { LoginAttemptAttributes } from './dto/login-attempt-attributes';
 
 describe('HttpDatastoreService', () => {
   beforeEach(() => {
@@ -33,7 +35,7 @@ describe('HttpDatastoreService', () => {
     (service: HttpDatastoreService, httpMock: HttpTestingController) => {
       expect(service).toBeTruthy();
 
-      service.findAll(LoginAttempt).subscribe(data => expect(data['name']).toEqual('Test Data'),
+      service.findAll(LoginAttempt, LoginAttemptAttributes).subscribe(data => expect(data['name']).toEqual('Test Data'),
         (err: JsonApiError[]) => {
           expect(err.length).toBe(1);
           expect(err[0].code).toBe(LOGIN_FAIL_BODY.errors[0].code);
@@ -45,7 +47,10 @@ describe('HttpDatastoreService', () => {
 
     it('should handle list response', inject([HttpDatastoreService, HttpTestingController],
       (service: HttpDatastoreService, httpMock: HttpTestingController) => {
-        service.findAll(User).subscribe(data => {
+        service.findAll(User, UserAttributes, null, [{
+          fname: 'email',
+          descending: true
+        }]).subscribe(data => {
           console.log(data);
           expect(data['name']).toEqual('Test Data');
         });

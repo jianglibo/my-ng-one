@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { DtoType } from './data-store';
+import { JsonapiObjectType, SortPhrase, FilterPhrase } from './data-store';
 import 'reflect-metadata';
 import { DtoDescriptionKey } from '../dto/dto-description';
 import { assertNever } from '../util/util';
-import { AttributesBase, JsonapiObject } from '../dto/jsonapi-object';
+import { AttributesBase, JsonapiObject, AttributeType } from '../dto/jsonapi-object';
 
 interface PageNumberSize {number: number; size: number; }
 interface PageOffsetLimit {offset: number; limit: number; }
@@ -47,15 +47,16 @@ export class DatastoreUtilService {
 
   constructor() { }
 
-  getListUrl<E extends AttributesBase, T extends JsonapiObject<E>> (dtoType: DtoType<E, T>,
+  getListUrl<E extends AttributesBase, T extends JsonapiObject<E>, K extends keyof E> (jsonapiObjectType: JsonapiObjectType<E, T>,
+     attributeType: AttributeType<E>,
      page: Pager,
-     sort: {fname: keyof E, descending: boolean}[],
-     filter: {fname: keyof E, value: any}[],
+     sort: SortPhrase<K>[],
+     filter: FilterPhrase<K>[],
      baseUrl = '/'): string {
     if (!baseUrl.endsWith('/')) {
       baseUrl = baseUrl + '/';
     }
-    let result = baseUrl + Reflect.getMetadata(DtoDescriptionKey, dtoType).nameInUrl;
+    let result = baseUrl + Reflect.getMetadata(DtoDescriptionKey, jsonapiObjectType).nameInUrl;
 
     let tobeappend = getPagerParams(page);
     let filterstr = getFilterParams(filter);
@@ -76,7 +77,8 @@ export class DatastoreUtilService {
     return result;
   }
 
-  getSingleUrl<E extends AttributesBase, T extends JsonapiObject<E>> (dtoType: DtoType<E, T>, id: number, baseUrl = '/'): string {
-    return this.getListUrl(dtoType, undefined, [], [], baseUrl) + '/' + id;
+  getSingleUrl<E extends AttributesBase, T extends JsonapiObject<E>> (
+      jsonapiObjectType: JsonapiObjectType<E, T>, id: number, baseUrl = '/'): string {
+    return this.getListUrl(jsonapiObjectType, null, undefined, [], [], baseUrl) + '/' + id;
   }
 }

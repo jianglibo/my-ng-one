@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { DataStore, DtoType } from './data-store';
-import { BaseDto } from '../dto/base-dto';
+import { DataStore, JsonapiObjectType, SortPhrase, FilterPhrase } from './data-store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { DatastoreUtilService, Pager } from './datastore-util.service';
-import { ListResult } from '../dto/list-result';
 import { ListResponse } from '../dto/list-response';
-import { JsonapiObject, AttributesBase } from '../dto/jsonapi-object';
+import { JsonapiObject, AttributesBase, AttributeType } from '../dto/jsonapi-object';
 
 export interface JsonApiError {
   code: string;
@@ -17,7 +15,6 @@ export interface JsonApiError {
   detail: string;
 }
 
-// function
 
 export class HttpDatastoreBase implements DataStore {
 
@@ -26,15 +23,16 @@ export class HttpDatastoreBase implements DataStore {
     private baseUrl: string,
     private defaultPager: Pager = {offset: 0, limit: 10}) {}
 
-  findAll<E extends AttributesBase, T extends JsonapiObject<E>>(dtoType: DtoType<E, T>,
+  findAll<E extends AttributesBase, T extends JsonapiObject<E>, K extends keyof E>(jsonapiObjectType: JsonapiObjectType<E, T>,
+    attributeType: AttributeType<E>,
     page?: Pager,
-    sort?: {fname: keyof E, descending: boolean}[],
-    filter?: {fname: keyof E, value: any}[],
+    sort?: SortPhrase<K>[],
+    filter?: FilterPhrase<K>[],
     params?: any): Observable<ListResponse<E, T>> {
       if (page == null) {
         page = this.defaultPager;
       }
-      let url = this.dutil.getListUrl(dtoType, page, sort, filter, this.baseUrl);
+      let url = this.dutil.getListUrl(jsonapiObjectType, attributeType, page, sort, filter, this.baseUrl);
       console.log(url);
       return this.http.get<ListResponse<E, T>>(url, {observe: 'response'}).map(resp => {
         let r = resp.body;
@@ -57,16 +55,17 @@ export class HttpDatastoreBase implements DataStore {
     // const e = new Error('Method not implemented.');
     // throw e;
   }
-  findRecord<E extends AttributesBase, T extends JsonapiObject<E>>(modelType: DtoType<E, T>, id: number, params?: any): Observable<T> {
+  findRecord<E extends AttributesBase, T extends JsonapiObject<E>>(
+    modelType: JsonapiObjectType<E, T>, id: number, params?: any): Observable<T> {
     throw new Error('Method not implemented.');
   }
-  createRecord<E extends AttributesBase, T extends JsonapiObject<E>>(modelType: DtoType<E, T>, data?: any): T {
+  createRecord<E extends AttributesBase, T extends JsonapiObject<E>>(modelType: JsonapiObjectType<E, T>, data?: any): T {
     throw new Error('Method not implemented.');
   }
   saveRecord<E extends AttributesBase, T extends JsonapiObject<E>>(attributesMetadata: any, model?: T, params?: any): Observable<T> {
     throw new Error('Method not implemented.');
   }
-  deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(modelType: DtoType<E, T>, id: string): Observable<Response> {
+  deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(modelType: JsonapiObjectType<E, T>, id: string): Observable<Response> {
     throw new Error('Method not implemented.');
   }
 

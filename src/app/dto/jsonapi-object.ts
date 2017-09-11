@@ -6,10 +6,14 @@ export abstract class AttributesBase {
     dtoAction: string;
 }
 
-export abstract class JsonapiObject<T extends AttributesBase> {
+export interface AttributeType<T extends AttributesBase> {
+    new(): T;
+}
+
+export abstract class JsonapiObject<E extends AttributesBase> {
     id: string;
     type: string;
     links: {self: string};
-    abstract attributes: T;
+    abstract attributes: E;
     abstract relationships: {[s: string]: Relationship};
 }

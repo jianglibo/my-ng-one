@@ -2,6 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { DatastoreUtilService } from './datastore-util.service';
 import { LoginAttempt } from '../dto/login-attempt';
+import { LoginAttemptAttributes } from '../dto/login-attempt-attributes';
 
 describe('DatastoreUtilService', () => {
   beforeEach(() => {
@@ -11,24 +12,22 @@ describe('DatastoreUtilService', () => {
   });
 
   it('should get right list url.', inject([DatastoreUtilService], (service: DatastoreUtilService) => {
-    const url = service.getListUrl(LoginAttempt, undefined, null, null, '/jsonapi/');
+    const url = service.getListUrl(LoginAttempt, LoginAttemptAttributes, undefined, null, null, '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts');
   }));
 
   it('should get right url with page.', inject([DatastoreUtilService], (service: DatastoreUtilService) => {
-    let url = service.getListUrl(LoginAttempt, {offset: 0, limit: 20} , null, null, '/jsonapi/');
+    let url = service.getListUrl(LoginAttempt, LoginAttemptAttributes, {offset: 0, limit: 20} , null, null, '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts?page[offset]=0&page[limit]=20');
 
-    url = service.getListUrl(LoginAttempt, {number: 0, size: 20} , null, null, '/jsonapi/');
+    url = service.getListUrl(LoginAttempt, LoginAttemptAttributes, {number: 0, size: 20} , null, null, '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts?page[number]=0&page[size]=20');
 
-    url = service.getListUrl(LoginAttempt, {cursor: 555} , null, null, '/jsonapi/');
+    url = service.getListUrl(LoginAttempt, LoginAttemptAttributes, {cursor: 555} , null, null, '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts?page[cursor]=555');
 
-    url = service.getListUrl(LoginAttempt,
-      null ,
-      // [{fname: 'username', descending: true}, {fname: 'password', descending: false}],
-      [],
+    url = service.getListUrl(LoginAttempt, LoginAttemptAttributes, null,
+      [{fname: 'username', descending: true}, {fname: 'password', descending: false}],
       [{fname: 'username', value: 'a'}], '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts?sort=-username,password&filter[username]=a');
 
