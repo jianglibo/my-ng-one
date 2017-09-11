@@ -1,8 +1,8 @@
 import { BaseDto } from '../dto/base-dto';
-import { ListResult } from './list-result';
 
 import { Observable } from 'rxjs/Observable';
 import { Pager } from './datastore-util.service';
+import { ListResult } from '../dto/list-result';
 
 export interface DtoType<T extends BaseDto> {
     new(datastore: DataStore, data: any): T;
