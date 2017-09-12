@@ -8,22 +8,21 @@ export interface JsonapiObjectType<E extends AttributesBase, T extends JsonapiOb
     new(datastore: DataStore, data: any): T;
 }
 
-export interface SortPhrase<T> {
-    fname: T;
+export interface SortPhrase {
+    fname: string;
     descending: boolean;
 }
 
-export interface FilterPhrase<T> {
-    fname: T;
+export interface FilterPhrase {
+    fname: string;
     value: any;
 }
 
 export interface DataStore {
-    findAll<E extends AttributesBase, T extends JsonapiObject<E>, K extends keyof E>(jsonapiObjectType: JsonapiObjectType<E, T>,
-        attributeType: AttributeType<E>,
+    findAll<E extends AttributesBase, T extends JsonapiObject<E>>(jsonapiObjectType: JsonapiObjectType<E, T>,
         page: Pager,
-        sort: SortPhrase<K>[],
-        filter: FilterPhrase<K>[],
+        sort: SortPhrase[],
+        filter: FilterPhrase[],
         params?: any): Observable<ListResponse<E, T>>;
 
     findRecord<E extends AttributesBase, T extends JsonapiObject<E>>(

@@ -23,16 +23,15 @@ export class HttpDatastoreBase implements DataStore {
     private baseUrl: string,
     private defaultPager: Pager = {offset: 0, limit: 10}) {}
 
-  findAll<E extends AttributesBase, T extends JsonapiObject<E>, K extends keyof E>(jsonapiObjectType: JsonapiObjectType<E, T>,
-    attributeType: AttributeType<E>,
+  findAll<E extends AttributesBase, T extends JsonapiObject<E>>(jsonapiObjectType: JsonapiObjectType<E, T>,
     page?: Pager,
-    sort?: SortPhrase<K>[],
-    filter?: FilterPhrase<K>[],
+    sort?: SortPhrase[] | SortPhrase,
+    filter?: FilterPhrase[] | FilterPhrase,
     params?: any): Observable<ListResponse<E, T>> {
       if (page == null) {
         page = this.defaultPager;
       }
-      let url = this.dutil.getListUrl(jsonapiObjectType, attributeType, page, sort, filter, this.baseUrl);
+      let url = this.dutil.getListUrl(jsonapiObjectType, page, sort, filter, this.baseUrl);
       console.log(url);
       return this.http.get<ListResponse<E, T>>(url, {observe: 'response'}).map(resp => {
         let r = resp.body;
@@ -56,17 +55,18 @@ export class HttpDatastoreBase implements DataStore {
     // throw e;
   }
   findRecord<E extends AttributesBase, T extends JsonapiObject<E>>(
-    modelType: JsonapiObjectType<E, T>, id: number, params?: any): Observable<T> {
+    jsonapiObjectType: JsonapiObjectType<E, T>, id: number, params?: any): Observable<T> {
     throw new Error('Method not implemented.');
   }
-  createRecord<E extends AttributesBase, T extends JsonapiObject<E>>(modelType: JsonapiObjectType<E, T>, data?: any): T {
+  createRecord<E extends AttributesBase, T extends JsonapiObject<E>>(jsonapiObjectType: JsonapiObjectType<E, T>, data?: any): T {
     throw new Error('Method not implemented.');
   }
   saveRecord<E extends AttributesBase, T extends JsonapiObject<E>>(attributesMetadata: any, model?: T, params?: any): Observable<T> {
     throw new Error('Method not implemented.');
   }
-  deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(modelType: JsonapiObjectType<E, T>, id: string): Observable<Response> {
-    throw new Error('Method not implemented.');
+  deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(
+    jsonapiObjectType: JsonapiObjectType<E, T>, id: string): Observable<Response> {
+      throw new Error('Method not implemented.');
   }
 
 }

@@ -1,13 +1,11 @@
 import { DtoDescription } from './dto-description';
 import { AttributesBase } from './jsonapi-object';
 
-enum GENDER {
-    FEMALE, MALE
-}
+type Gender = "FEMALE" | "MALE";
 
 export class UserAttributes extends AttributesBase {
     country: string;
-    gender: GENDER;
+    gender: string;
     city: string;
     displayName: string;
     credentialsNonExpired: boolean;

@@ -11,6 +11,10 @@ interface PageCursor {cursor: number; }
 
 export type Pager = PageNumberSize | PageOffsetLimit | PageCursor;
 
+function isOneObject<T>(oneOrMany: T[] | T): oneOrMany is T {
+  return !(<T>oneOrMany instanceof Array);
+}
+
 function getPagerParams(page: Pager): string {
     let tpage: Pager;
     let pagestr = '';
@@ -32,9 +36,12 @@ function getPagerParams(page: Pager): string {
     return pagestr;
 }
 
-function getFilterParams(filter: {fname: string, value: any}[]): string {
+function getFilterParams(filter: FilterPhrase | FilterPhrase[]): string {
     let filterstr = '';
     if (filter) {
+      if (isOneObject<FilterPhrase>(filter)) {
+        filter = [filter];
+      }
       filterstr = filter.map((v, i, a) => {
         return `filter[${v.fname}]=${v.value}`;
       }).join('&');
@@ -42,16 +49,28 @@ function getFilterParams(filter: {fname: string, value: any}[]): string {
     return filterstr;
 }
 
+function getSortParams(sort: SortPhrase[] | SortPhrase): string {
+  let sortstr = '';
+  if (sort) {
+    if (isOneObject(sort)) {
+      sort = [sort];
+    }
+    sortstr = sort.map((v, i, a) => {
+      return v.descending ? '-' + v.fname : v.fname;
+    }).join(',');
+  }
+  return sortstr;
+}
+
 @Injectable()
 export class DatastoreUtilService {
 
   constructor() { }
 
-  getListUrl<E extends AttributesBase, T extends JsonapiObject<E>, K extends keyof E> (jsonapiObjectType: JsonapiObjectType<E, T>,
-     attributeType: AttributeType<E>,
+  getListUrl<E extends AttributesBase, T extends JsonapiObject<E>>(jsonapiObjectType: JsonapiObjectType<E, T>,
      page: Pager,
-     sort: SortPhrase<K>[],
-     filter: FilterPhrase<K>[],
+     sort: SortPhrase[] | SortPhrase,
+     filter: FilterPhrase[] | FilterPhrase,
      baseUrl = '/'): string {
     if (!baseUrl.endsWith('/')) {
       baseUrl = baseUrl + '/';
@@ -60,11 +79,7 @@ export class DatastoreUtilService {
 
     let tobeappend = getPagerParams(page);
     let filterstr = getFilterParams(filter);
-    let sortstr = sort ? sort.map((v, i, a) => {
-      return v.descending ? '-' + v.fname : v.fname;
-    }).join(',') : '';
-
-    console.log(sortstr);
+    let sortstr = getSortParams(sort);
 
     if (sortstr) {
       sortstr = 'sort=' + sortstr;
@@ -79,6 +94,6 @@ export class DatastoreUtilService {
 
   getSingleUrl<E extends AttributesBase, T extends JsonapiObject<E>> (
       jsonapiObjectType: JsonapiObjectType<E, T>, id: number, baseUrl = '/'): string {
-    return this.getListUrl(jsonapiObjectType, null, undefined, [], [], baseUrl) + '/' + id;
+    return this.getListUrl(jsonapiObjectType, undefined, [], [], baseUrl) + '/' + id;
   }
 }

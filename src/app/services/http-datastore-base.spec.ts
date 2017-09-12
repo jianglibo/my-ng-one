@@ -16,7 +16,7 @@ describe('HttpDatastoreService', () => {
 
   it('should be created', inject([HttpDatastoreBase], (service: HttpDatastoreBase) => {
     expect(service).toBeTruthy();
-    service.findAll(LoginAttempt, LoginAttemptAttributes).subscribe(data => expect(data['name']).toEqual('Test Data'), err => {
+    service.findAll(LoginAttempt).subscribe(data => expect(data['name']).toEqual('Test Data'), err => {
       console.log(err);
     });
   }));

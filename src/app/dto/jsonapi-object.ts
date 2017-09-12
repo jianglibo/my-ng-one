@@ -1,7 +1,7 @@
 export interface Relationship {links: {self: string, related: string}; }
 
 export abstract class AttributesBase {
-    createdAt: Date;
+    createdAt: number;
     dtoApplyTo: string;
     dtoAction: string;
 }
@@ -15,5 +15,5 @@ export abstract class JsonapiObject<E extends AttributesBase> {
     type: string;
     links: {self: string};
     abstract attributes: E;
-    abstract relationships: {[s: string]: Relationship};
+    abstract relationships?: {[s: string]: Relationship};
 }

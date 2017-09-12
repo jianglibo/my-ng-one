@@ -12,25 +12,39 @@ describe('DatastoreUtilService', () => {
   });
 
   it('should get right list url.', inject([DatastoreUtilService], (service: DatastoreUtilService) => {
-    const url = service.getListUrl(LoginAttempt, LoginAttemptAttributes, undefined, null, null, '/jsonapi/');
+    const url = service.getListUrl(LoginAttempt, undefined, null, null, '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts');
   }));
 
   it('should get right url with page.', inject([DatastoreUtilService], (service: DatastoreUtilService) => {
-    let url = service.getListUrl(LoginAttempt, LoginAttemptAttributes, {offset: 0, limit: 20} , null, null, '/jsonapi/');
+    let url = service.getListUrl(LoginAttempt, {offset: 0, limit: 20} , null, null, '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts?page[offset]=0&page[limit]=20');
 
-    url = service.getListUrl(LoginAttempt, LoginAttemptAttributes, {number: 0, size: 20} , null, null, '/jsonapi/');
+    url = service.getListUrl(LoginAttempt, {number: 0, size: 20} , null, null, '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts?page[number]=0&page[size]=20');
 
-    url = service.getListUrl(LoginAttempt, LoginAttemptAttributes, {cursor: 555} , null, null, '/jsonapi/');
+    url = service.getListUrl(LoginAttempt, {cursor: 555} , null, null, '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts?page[cursor]=555');
 
-    url = service.getListUrl(LoginAttempt, LoginAttemptAttributes, null,
+    url = service.getListUrl(LoginAttempt, null,
       [{fname: 'username', descending: true}, {fname: 'password', descending: false}],
       [{fname: 'username', value: 'a'}], '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts?sort=-username,password&filter[username]=a');
 
+    url = service.getListUrl(LoginAttempt, null,
+      [{fname: 'username', descending: true}, {fname: 'password', descending: false}],
+      {fname: 'username', value: 'a'}, '/jsonapi/');
+    expect(url).toBe('/jsonapi/loginAttempts?sort=-username,password&filter[username]=a');
+
+    url = service.getListUrl(LoginAttempt, null,
+      {fname: 'username', descending: true},
+      [{fname: 'username', value: 'a'}], '/jsonapi/');
+    expect(url).toBe('/jsonapi/loginAttempts?sort=password&filter[username]=a');
+
+    url = service.getListUrl(LoginAttempt, null,
+      {fname: 'username', descending: true},
+      {fname: 'username', value: 'a'}, '/jsonapi/');
+    expect(url).toBe('/jsonapi/loginAttempts?sort=password&filter[username]=a');
   }));
 
   it('should get right single url.', inject([DatastoreUtilService], (service: DatastoreUtilService) => {
