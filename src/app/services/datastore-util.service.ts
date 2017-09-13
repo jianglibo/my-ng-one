@@ -15,6 +15,10 @@ function isOneObject<T>(oneOrMany: T[] | T): oneOrMany is T {
   return !(<T>oneOrMany instanceof Array);
 }
 
+function isModelInstance<E extends AttributesBase, T extends JsonapiObject<E>>(model: JsonapiObjectType<E, T> | T): model is T {
+  return (<T>model).type !== undefined;
+}
+
 function getPagerParams(page: Pager): string {
     let tpage: Pager;
     let pagestr = '';
@@ -67,33 +71,46 @@ export class DatastoreUtilService {
 
   constructor() { }
 
-  getListUrl<E extends AttributesBase, T extends JsonapiObject<E>>(jsonapiObjectType: JsonapiObjectType<E, T>,
+  getListUrl<E extends AttributesBase, T extends JsonapiObject<E>>(jsonapiObjectType: JsonapiObjectType<E, T> | string,
      page: Pager,
      sort: SortPhrase[] | SortPhrase,
      filter: FilterPhrase[] | FilterPhrase,
      baseUrl = '/'): string {
-    if (!baseUrl.endsWith('/')) {
-      baseUrl = baseUrl + '/';
-    }
-    let result = baseUrl + Reflect.getMetadata(DtoDescriptionKey, jsonapiObjectType).nameInUrl;
+       let nameInUrl: string;
+       if (typeof jsonapiObjectType !== 'string') {
+          nameInUrl = Reflect.getMetadata(DtoDescriptionKey, jsonapiObjectType).nameInUrl;
+       } else {
+         nameInUrl = jsonapiObjectType;
+       }
+       if (!baseUrl.endsWith('/')) {
+        baseUrl = baseUrl + '/';
+      }
+      let result = baseUrl + nameInUrl;
 
-    let tobeappend = getPagerParams(page);
-    let filterstr = getFilterParams(filter);
-    let sortstr = getSortParams(sort);
+      let tobeappend = getPagerParams(page);
+      let filterstr = getFilterParams(filter);
+      let sortstr = getSortParams(sort);
 
-    if (sortstr) {
-      sortstr = 'sort=' + sortstr;
-      tobeappend = tobeappend ? tobeappend + '&' + sortstr : sortstr;
-    }
-    if (filterstr) {
-      tobeappend = tobeappend ? tobeappend + '&' + filterstr : filterstr;
-    }
-    result = tobeappend ? result + '?' + tobeappend : result;
-    return result;
+      if (sortstr) {
+        sortstr = 'sort=' + sortstr;
+        tobeappend = tobeappend ? tobeappend + '&' + sortstr : sortstr;
+      }
+      if (filterstr) {
+        tobeappend = tobeappend ? tobeappend + '&' + filterstr : filterstr;
+      }
+      result = tobeappend ? result + '?' + tobeappend : result;
+      return result;
   }
 
   getSingleUrl<E extends AttributesBase, T extends JsonapiObject<E>> (
-      jsonapiObjectType: JsonapiObjectType<E, T>, id: number, baseUrl = '/'): string {
-    return this.getListUrl(jsonapiObjectType, undefined, [], [], baseUrl) + '/' + id;
+      jsonapiObjectType: JsonapiObjectType<E, T>, id: number | string, baseUrl: string): string;
+  getSingleUrl<E extends AttributesBase, T extends JsonapiObject<E>> (model: T, baseUrl: string): string;
+  getSingleUrl<E extends AttributesBase, T extends JsonapiObject<E>> (
+      jsonapiObjectType: JsonapiObjectType<E, T> | T, id: number | string, baseUrl = '/'): string {
+        if (isModelInstance(jsonapiObjectType)) {
+          return this.getListUrl(jsonapiObjectType.type, undefined, [], [], baseUrl) + '/' + id;
+        } else {
+          return this.getListUrl(jsonapiObjectType, undefined, [], [], baseUrl) + '/' + id;
+        }
   }
 }

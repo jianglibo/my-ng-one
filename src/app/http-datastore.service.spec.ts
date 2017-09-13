@@ -12,8 +12,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { LOGIN_FAIL_BODY } from './fixtures/loginfailure';
 import { USERS_BODY } from './fixtures/usersgetlist';
 import { User } from './dto/user';
-import { UserAttributes } from './dto/user-attributes';
+import { UserAttributes, Gender } from './dto/user-attributes';
 import { LoginAttemptAttributes } from './dto/login-attempt-attributes';
+import { USER_BODY } from './fixtures/usersgetone';
+import { LOGIN_SUCCESS_BODY } from './fixtures/loginsuccess';
 
 fdescribe('HttpDatastoreService', () => {
   beforeEach(() => {
@@ -35,7 +37,7 @@ fdescribe('HttpDatastoreService', () => {
     (service: HttpDatastoreService, httpMock: HttpTestingController) => {
       expect(service).toBeTruthy();
 
-      service.findAll(LoginAttempt).subscribe(data => expect(data['name']).toEqual('Test Data'),
+      service.findAll(LoginAttempt).subscribe(data => expect(data).toBeTruthy,
         (err: JsonApiError[]) => {
           expect(err.length).toBe(1);
           expect(err[0].code).toBe(LOGIN_FAIL_BODY.errors[0].code);
@@ -51,12 +53,75 @@ fdescribe('HttpDatastoreService', () => {
           console.log(lr);
           expect(lr.data.length).toBe(4);
           expect(lr.data[0].id).toBe("1277956");
+          expect(lr.data[0].type).toBe('users');
           expect(lr.data[0].attributes.createdAt).toBe(1499931915901);
           expect(lr.data[0].attributes.name).toBe("user0");
+          expect(lr.data[0].attributes.gender).toBe("FEMALE");
           expect(lr.data[0].relationships.followers.links.related).toBe('http://localhost/jsonapi/users/1277956/followers');
         });
         const req = httpMock.expectOne('/jsonapi/users?page[offset]=0&page[limit]=10');
         req.flush(USERS_BODY, { status: 200 , statusText: 'OK'});
         httpMock.verify();
       }));
+    it('should handle single response', inject([HttpDatastoreService, HttpTestingController],
+      (service: HttpDatastoreService, httpMock: HttpTestingController) => {
+        let did = "1277974";
+        service.findRecord(User, did).subscribe(sr => {
+          expect(sr.data.id).toBe(did);
+          expect(sr.data.type).toBe("users");
+          expect(sr.data.attributes.createdAt).toBe(1499931924687);
+          expect(sr.data.attributes.name).toBe("name1334");
+          expect(sr.data.attributes.gender).toBe("FEMALE");
+          expect(sr.data.relationships.followers.links.related).toBe(`http://localhost/jsonapi/users/${did}/followers`);
+        });
+        const req = httpMock.expectOne(`/jsonapi/users/${did}`);
+        req.flush(USER_BODY, { status: 200 , statusText: 'OK'});
+        httpMock.verify();
+      }));
+
+      it('should handle update resource', inject([HttpDatastoreService, HttpTestingController],
+        (service: HttpDatastoreService, httpMock: HttpTestingController) => {
+          let user = new User({email: ''});
+          user.id = "123456";
+          service.saveRecord(user).subscribe(sr => {
+            console.log(sr);
+            expect(sr.data.id).toBe("1277974");
+            expect(sr.data.attributes.createdAt).toBe(1499931924687);
+            expect(sr.data.attributes.name).toBe("name1334");
+            expect(sr.data.attributes.gender).toBe("FEMALE");
+            expect(sr.data.relationships.followers.links.related).toBe('http://localhost/jsonapi/users/1277974/followers');
+          });
+          const req = httpMock.expectOne('/jsonapi/users/123456');
+          req.flush(USER_BODY, { status: 200 , statusText: 'OK'});
+          httpMock.verify();
+        }));
+
+    it('should handle login success.', inject([HttpDatastoreService, HttpTestingController],
+      (service: HttpDatastoreService, httpMock: HttpTestingController) => {
+        let la = new LoginAttempt({username: '', password: ''});
+        expect(la.type).toBe("loginAttempts");
+        service.createRecord(LoginAttempt, la).subscribe(sr => {
+          console.log(sr);
+          expect(sr.data.id).toBe("884765");
+        });
+        const req = httpMock.expectOne('/jsonapi/loginAttempts');
+        req.flush(LOGIN_SUCCESS_BODY, { status: 200 , statusText: 'OK'});
+        expect(req.request.body['data']).toEqual(new LoginAttempt({username: '', password: ''}));
+        httpMock.verify();
+      }));
+
+      it('should handle login fail.', inject([HttpDatastoreService, HttpTestingController],
+        (service: HttpDatastoreService, httpMock: HttpTestingController) => {
+          let la = new LoginAttempt({username: '', password: ''});
+          service.createRecord(LoginAttempt, la).subscribe(sr => {
+            console.log(sr);
+            expect(sr.data.id).toBe("884765");
+          }, (err: JsonApiError[]) => {
+            expect(err[0].code).toBe('E4001000');
+          });
+          const req = httpMock.expectOne('/jsonapi/loginAttempts');
+          req.flush(LOGIN_FAIL_BODY, { status: 400 , statusText: 'Access Denied.'});
+          expect(req.request.body['data']).toEqual(new LoginAttempt({username: '', password: ''}));
+          httpMock.verify();
+        }));
 });

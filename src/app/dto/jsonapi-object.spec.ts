@@ -3,7 +3,7 @@ import { User } from './user';
 
 describe('jsonapi object.', () => {
     it('relationship.', () => {
-        let jo = new User();
+        let jo = new User({email: ''});
         jo.relationships = {
             unreads: {links: {self: 'a', related: 'b'}},
             followers: {links: {self: 'a', related: 'b'}}

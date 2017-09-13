@@ -7,6 +7,9 @@ import { LoginAttemptAttributes } from './login-attempt-attributes';
     nameInUrl: 'loginAttempts',
 })
 export class LoginAttempt extends JsonapiObject<LoginAttemptAttributes>  {
+    constructor(attributes: LoginAttemptAttributes) {
+        super(LoginAttempt);
+        this.attributes = attributes;
+    }
     attributes: LoginAttemptAttributes;
-    relationships: { a: Relationship; };
 }

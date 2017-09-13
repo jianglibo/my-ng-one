@@ -1,9 +1,11 @@
+import { JsonapiObjectType } from '../services/data-store';
+import { DtoDescriptionKey } from './dto-description';
 export interface Relationship {links: {self: string, related: string}; }
 
 export abstract class AttributesBase {
-    createdAt: number;
-    dtoApplyTo: string;
-    dtoAction: string;
+    createdAt?: number;
+    dtoApplyTo?: string;
+    dtoAction?: string;
 }
 
 export interface AttributeType<T extends AttributesBase> {
@@ -11,9 +13,12 @@ export interface AttributeType<T extends AttributesBase> {
 }
 
 export abstract class JsonapiObject<E extends AttributesBase> {
+    constructor(jt: any) {
+        this.type = Reflect.getMetadata(DtoDescriptionKey, jt).nameInUrl;
+    }
     id: string;
     type: string;
     links: {self: string};
     abstract attributes: E;
-    abstract relationships?: {[s: string]: Relationship};
+    relationships?: {[s: string]: Relationship};
 }

@@ -8,6 +8,10 @@ type RelationNames = 'unreads' | 'followers' | 'abc';
     nameInUrl: 'users',
 })
 export class User extends JsonapiObject<UserAttributes> {
+    constructor(attributes: UserAttributes) {
+        super(User);
+        this.attributes = attributes;
+    }
     attributes: UserAttributes;
     relationships?: {[key in RelationNames]?: Relationship; };
 }
