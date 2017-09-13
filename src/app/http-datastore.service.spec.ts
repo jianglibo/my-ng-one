@@ -50,7 +50,6 @@ fdescribe('HttpDatastoreService', () => {
     it('should handle list response', inject([HttpDatastoreService, HttpTestingController],
       (service: HttpDatastoreService, httpMock: HttpTestingController) => {
         service.findAll(User).subscribe(lr => {
-          console.log(lr);
           expect(lr.data.length).toBe(4);
           expect(lr.data[0].id).toBe("1277956");
           expect(lr.data[0].type).toBe('users');
@@ -84,7 +83,6 @@ fdescribe('HttpDatastoreService', () => {
           let user = new User({email: ''});
           user.id = "123456";
           service.saveRecord(user).subscribe(sr => {
-            console.log(sr);
             expect(sr.data.id).toBe("1277974");
             expect(sr.data.attributes.createdAt).toBe(1499931924687);
             expect(sr.data.attributes.name).toBe("name1334");
@@ -95,13 +93,25 @@ fdescribe('HttpDatastoreService', () => {
           req.flush(USER_BODY, { status: 200 , statusText: 'OK'});
           httpMock.verify();
         }));
+      it('should handle delete resource', inject([HttpDatastoreService, HttpTestingController],
+        (service: HttpDatastoreService, httpMock: HttpTestingController) => {
+          let user = new User({email: ''});
+          user.id = "123456";
+          service.deleteRecord(user).subscribe(resp => {
+          });
+          const req = httpMock.expectOne(rq => {
+            return rq.method === 'DELETE' && rq.url === '/jsonapi/users/123456';
+          });
+          req.flush(USER_BODY, { status: 200 , statusText: 'OK'});
+          httpMock.verify();
+        }));
+
 
     it('should handle login success.', inject([HttpDatastoreService, HttpTestingController],
       (service: HttpDatastoreService, httpMock: HttpTestingController) => {
         let la = new LoginAttempt({username: '', password: ''});
         expect(la.type).toBe("loginAttempts");
         service.createRecord(LoginAttempt, la).subscribe(sr => {
-          console.log(sr);
           expect(sr.data.id).toBe("884765");
         });
         const req = httpMock.expectOne('/jsonapi/loginAttempts');
@@ -114,7 +124,6 @@ fdescribe('HttpDatastoreService', () => {
         (service: HttpDatastoreService, httpMock: HttpTestingController) => {
           let la = new LoginAttempt({username: '', password: ''});
           service.createRecord(LoginAttempt, la).subscribe(sr => {
-            console.log(sr);
             expect(sr.data.id).toBe("884765");
           }, (err: JsonApiError[]) => {
             expect(err[0].code).toBe('E4001000');

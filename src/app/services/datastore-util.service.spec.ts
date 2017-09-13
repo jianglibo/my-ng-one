@@ -4,7 +4,7 @@ import { DatastoreUtilService } from './datastore-util.service';
 import { LoginAttempt } from '../dto/login-attempt';
 import { LoginAttemptAttributes } from '../dto/login-attempt-attributes';
 
-describe('DatastoreUtilService', () => {
+fdescribe('DatastoreUtilService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [DatastoreUtilService]
@@ -39,16 +39,21 @@ describe('DatastoreUtilService', () => {
     url = service.getListUrl(LoginAttempt, null,
       {fname: 'username', descending: true},
       [{fname: 'username', value: 'a'}], '/jsonapi/');
-    expect(url).toBe('/jsonapi/loginAttempts?sort=password&filter[username]=a');
+    expect(url).toBe('/jsonapi/loginAttempts?sort=-username&filter[username]=a');
 
     url = service.getListUrl(LoginAttempt, null,
       {fname: 'username', descending: true},
       {fname: 'username', value: 'a'}, '/jsonapi/');
-    expect(url).toBe('/jsonapi/loginAttempts?sort=password&filter[username]=a');
+    expect(url).toBe('/jsonapi/loginAttempts?sort=-username&filter[username]=a');
   }));
 
   it('should get right single url.', inject([DatastoreUtilService], (service: DatastoreUtilService) => {
-    const url = service.getSingleUrl(LoginAttempt, 55, '/jsonapi/');
+    let url = service.getSingleUrl(LoginAttempt, 55, '/jsonapi/');
+    expect(url).toBe('/jsonapi/loginAttempts/55');
+
+    let la = new LoginAttempt({username: '', password: ''});
+    la.id = '55';
+    url = service.getSingleUrl(la, '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts/55');
   }));
 

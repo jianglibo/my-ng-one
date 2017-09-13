@@ -34,8 +34,7 @@ export interface DataStore {
 
     saveRecord<E extends AttributesBase, T extends JsonapiObject<E>>(model: T, params?: any): Observable<SingleBody<E, T>>;
 
-    // deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(model: T): Observable<Response>;
-
+    deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(model: T): Observable<Response>;
     deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(
         jsonapiObjectType: JsonapiObjectType<E, T>, id: string): Observable<Response>;
 }

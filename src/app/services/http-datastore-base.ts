@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { DatastoreUtilService, Pager } from './datastore-util.service';
+import { DatastoreUtilService, Pager, isModelInstance } from './datastore-util.service';
 import { ListBody } from '../dto/list-body';
 import { JsonapiObject, AttributesBase, AttributeType } from '../dto/jsonapi-object';
 import { SingleBody } from '../dto/single-body';
@@ -99,9 +99,18 @@ export class HttpDatastoreBase implements DataStore {
   404 NOT FOUND
   A server SHOULD return a 404 Not Found status code if a deletion request fails due to the resource not existing.
   */
+  deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(model: T): Observable<Response>;
   deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(
-    jsonapiObjectType: JsonapiObjectType<E, T>, id: string): Observable<Response> {
-      let url = this.dutil.getSingleUrl(jsonapiObjectType, id, this.baseUrl);
+    jsonapiObjectType: JsonapiObjectType<E, T>, id: string): Observable<Response>;
+
+  deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(
+    jsonapiObjectType: JsonapiObjectType<E, T> | T, id?: string | number): Observable<Response> {
+      let url: string;
+      if (isModelInstance(jsonapiObjectType)) {
+        url = this.dutil.getSingleUrl(jsonapiObjectType, this.baseUrl);
+      } else {
+        url = this.dutil.getSingleUrl(jsonapiObjectType, id, this.baseUrl);
+      }
       return this.http.delete<SingleBody<E, T>>(url, {observe: 'response'}).map(resp => {
         switch (resp.status) {
           case 200:

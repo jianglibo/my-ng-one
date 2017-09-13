@@ -11,11 +11,11 @@ interface PageCursor {cursor: number; }
 
 export type Pager = PageNumberSize | PageOffsetLimit | PageCursor;
 
-function isOneObject<T>(oneOrMany: T[] | T): oneOrMany is T {
+export function isOneObject<T>(oneOrMany: T[] | T): oneOrMany is T {
   return !(<T>oneOrMany instanceof Array);
 }
 
-function isModelInstance<E extends AttributesBase, T extends JsonapiObject<E>>(model: JsonapiObjectType<E, T> | T): model is T {
+export function isModelInstance<E extends AttributesBase, T extends JsonapiObject<E>>(model: JsonapiObjectType<E, T> | T): model is T {
   return (<T>model).type !== undefined;
 }
 
@@ -71,16 +71,16 @@ export class DatastoreUtilService {
 
   constructor() { }
 
-  getListUrl<E extends AttributesBase, T extends JsonapiObject<E>>(jsonapiObjectType: JsonapiObjectType<E, T> | string,
+  getListUrl<E extends AttributesBase, T extends JsonapiObject<E>>(jsonapiObjectTypeOrString: JsonapiObjectType<E, T> | string,
      page: Pager,
      sort: SortPhrase[] | SortPhrase,
      filter: FilterPhrase[] | FilterPhrase,
      baseUrl = '/'): string {
        let nameInUrl: string;
-       if (typeof jsonapiObjectType !== 'string') {
-          nameInUrl = Reflect.getMetadata(DtoDescriptionKey, jsonapiObjectType).nameInUrl;
+       if (typeof jsonapiObjectTypeOrString === 'string') {
+         nameInUrl = jsonapiObjectTypeOrString;
        } else {
-         nameInUrl = jsonapiObjectType;
+         nameInUrl = Reflect.getMetadata(DtoDescriptionKey, jsonapiObjectTypeOrString).nameInUrl;
        }
        if (!baseUrl.endsWith('/')) {
         baseUrl = baseUrl + '/';
@@ -108,7 +108,7 @@ export class DatastoreUtilService {
   getSingleUrl<E extends AttributesBase, T extends JsonapiObject<E>> (
       jsonapiObjectType: JsonapiObjectType<E, T> | T, id: number | string, baseUrl = '/'): string {
         if (isModelInstance(jsonapiObjectType)) {
-          return this.getListUrl(jsonapiObjectType.type, undefined, [], [], baseUrl) + '/' + id;
+          return this.getListUrl(jsonapiObjectType.type, undefined, [], [], id as string) + '/' + jsonapiObjectType.id;
         } else {
           return this.getListUrl(jsonapiObjectType, undefined, [], [], baseUrl) + '/' + id;
         }
