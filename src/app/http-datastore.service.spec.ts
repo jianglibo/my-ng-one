@@ -17,7 +17,7 @@ import { LoginAttemptAttributes } from './dto/login-attempt-attributes';
 import { USER_BODY } from './fixtures/usersgetone';
 import { LOGIN_SUCCESS_BODY } from './fixtures/loginsuccess';
 
-fdescribe('HttpDatastoreService', () => {
+describe('HttpDatastoreService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],

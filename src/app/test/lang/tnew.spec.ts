@@ -32,8 +32,8 @@ describe('new usage.', () => {
     // c = new ((a: number) => {})(1);
     // const o = new c();
     // console.log(typeof c);
-    const nt: string = createInstance(Lion).keeper.nametag;
-    const bt: boolean = createInstance(Bee).keeper.hasMask;
+    // const nt: string = createInstance(Lion).keeper.nametag;
+    // const bt: boolean = createInstance(Bee).keeper.hasMask;
     });
 
     it('object destruction', () => {
@@ -51,13 +51,5 @@ describe('new usage.', () => {
         const { a: newName1, b: newName2 } = o;
         expect(newName1).toBe('foo');
         expect(newName2).toBe(12);
-    });
-
-
-    it('type should work.', () => {
-        type C = { a: string, b?: number };
-        function f({ a, b } = { a: '', b: 0 }): void {
-            // ...
-        }
     });
   });

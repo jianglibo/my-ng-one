@@ -4,7 +4,7 @@ import { DatastoreUtilService } from './datastore-util.service';
 import { LoginAttempt } from '../dto/login-attempt';
 import { LoginAttemptAttributes } from '../dto/login-attempt-attributes';
 
-fdescribe('DatastoreUtilService', () => {
+describe('DatastoreUtilService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [DatastoreUtilService]

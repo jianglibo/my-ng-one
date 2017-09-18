@@ -14,3 +14,4 @@ AddType font/ttf .ttf
 AddType font/otf .otf
 AddType application/x-font-woff woff
 
+# angular-cli version.
