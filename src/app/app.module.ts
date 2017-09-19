@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppComponent } from './app.component';
+import { TopComponent } from './topcom';
+import { TcomComponent } from './tcom/tcom.component';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { MdButtonModule, MdCheckboxModule } from '@angular/material';
 
@@ -21,8 +22,8 @@ import { AppComponent } from './app.component';
     // HttpClientModule
     // must include this module.
   ],
-  declarations: [ AppComponent ],
+  declarations: [ TopComponent, TcomComponent ],
   providers: [],
-  bootstrap: [ AppComponent ]
+  bootstrap: [ TopComponent ]
 })
 export class AppModule { }

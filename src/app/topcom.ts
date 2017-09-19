@@ -4,14 +4,14 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: './topcom.html',
+  styleUrls: ['./topcom.css']
 })
-export class AppComponent/* implements OnInit*/ {
+export class TopComponent implements OnInit {
   title = 'My First Angular App';
   // heroes = ['Windstorm', 'Bombasto', 'Magneta', '苏东坡'];
   // constructor() {}
-  // ngOnInit(): void {
+  ngOnInit(): void {
     // this.datastore.query(User, {page: {offset: 0, limit: 1}}).subscribe(
     //   (users: User[]) => console.log(users),
     //   (errorResponse) => {
@@ -25,5 +25,5 @@ export class AppComponent/* implements OnInit*/ {
     //   // Read the result field from the JSON response.
     //   console.log(data);
     // });
-  // }
+  }
 }

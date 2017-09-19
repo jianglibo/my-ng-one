@@ -15,3 +15,7 @@ AddType font/otf .otf
 AddType application/x-font-woff woff
 
 # angular-cli version.
+sudo npm install -g npm-check-updates
+
+npm outdated
+npm update
