@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { TopComponent } from './topcom';
 import { TcomComponent } from './tcom/tcom.component';
+
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { MdButtonModule, MdCheckboxModule } from '@angular/material';
 
@@ -10,10 +11,15 @@ import { TcomComponent } from './tcom/tcom.component';
 
 // import 'hammerjs';
 
+import { MymModule } from './example/mym/mym.module';
+import { TopToolbarModule } from './shared/top-toolbar/top-toolbar.module';
+
 // An NgModule is a class adorned with the @NgModule decorator function
 @NgModule({
   imports: [
     BrowserModule,
+    MymModule,
+    TopToolbarModule
     // BrowserAnimationsModule,
     // MdButtonModule,
     // MdCheckboxModule,
@@ -22,7 +28,7 @@ import { TcomComponent } from './tcom/tcom.component';
     // HttpClientModule
     // must include this module.
   ],
-  declarations: [ TopComponent, TcomComponent ],
+  declarations: [ TopComponent, TcomComponent],
   providers: [],
   bootstrap: [ TopComponent ]
 })

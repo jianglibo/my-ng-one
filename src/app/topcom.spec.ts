@@ -1,6 +1,9 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { TopComponent } from './topcom';
 
+import { MymModule } from './example/mym/mym.module';
+import { TopToolbarModule } from './shared/top-toolbar/top-toolbar.module';
+
 
 // describe('Topcom should work.', () => {
 //   beforeEach(async(() => {
@@ -30,13 +33,14 @@ import { TopComponent } from './topcom';
 //   }));
 // });
 
-describe('TcomComponent', () => {
+describe('TopComponent', () => {
   let component: TopComponent;
   let fixture: ComponentFixture<TopComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TopComponent ]
+      declarations: [ TopComponent],
+      imports: [MymModule, TopToolbarModule]
     })
     .compileComponents();
   }));

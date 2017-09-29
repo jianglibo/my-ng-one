@@ -1,22 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TcomComponent } from './tcom.component';
-import { MymModule } from '../example/mym/mym.module';
+import { MatGridListModule } from '@angular/material';
+import { ListComponent } from './list.component';
 
-describe('TcomComponent', () => {
-  let component: TcomComponent;
-  let fixture: ComponentFixture<TcomComponent>;
+describe('ListComponent', () => {
+  let component: ListComponent;
+  let fixture: ComponentFixture<ListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TcomComponent ],
-      imports: [MymModule]
+      declarations: [ ListComponent ],
+      imports: [ MatGridListModule ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TcomComponent);
+    fixture = TestBed.createComponent(ListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
