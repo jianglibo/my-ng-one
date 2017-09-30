@@ -54,7 +54,7 @@ describe('TopComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
-
+/*
   it(`should have as title 'app'`, async(() => {
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('My First Angular App');
@@ -65,4 +65,5 @@ describe('TopComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('Welcome to My First Angular App!');
   }));
+*/
 });
