@@ -1,7 +1,7 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { TopComponent } from './topcom';
+import { MyNgFirstAppComponent } from './my-ng-first-app';
 
-import { MymModule } from './example/mym/mym.module';
+import { MymModule } from './example/list/mym.module';
 import { TopToolbarModule } from './shared/top-toolbar/top-toolbar.module';
 
 
@@ -34,19 +34,19 @@ import { TopToolbarModule } from './shared/top-toolbar/top-toolbar.module';
 // });
 
 describe('TopComponent', () => {
-  let component: TopComponent;
-  let fixture: ComponentFixture<TopComponent>;
+  let component: MyNgFirstAppComponent;
+  let fixture: ComponentFixture<MyNgFirstAppComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TopComponent],
+      declarations: [ MyNgFirstAppComponent ],
       imports: [MymModule, TopToolbarModule]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TopComponent);
+    fixture = TestBed.createComponent(MyNgFirstAppComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

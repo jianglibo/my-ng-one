@@ -4,10 +4,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './topcom.html',
-  styleUrls: ['./topcom.css']
+  templateUrl: './my-ng-first-app.html',
+  styleUrls: ['./my-ng-first-app.css']
 })
-export class TopComponent implements OnInit {
+export class MyNgFirstAppComponent implements OnInit {
   title = 'My First Angular App';
   // heroes = ['Windstorm', 'Bombasto', 'Magneta', '苏东坡'];
   // constructor() {}
