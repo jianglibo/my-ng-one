@@ -10,4 +10,12 @@ describe('for.', () => {
 
         expect(c).toBe('a=1&b=2');
    });
+
+   it('should slice array.', () => {
+       let ary = [1, 2, 3];
+       expect(ary.slice().length).toBe(3);
+       expect(ary === ary.slice()).toBeFalsy();
+       let b = ary;
+       expect(ary === b).toBeTruthy();
+   });
   });

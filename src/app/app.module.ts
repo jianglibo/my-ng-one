@@ -15,6 +15,11 @@ import { MATERIAL_COMPATIBILITY_MODE } from '@angular/material';
 
 import { MymModule } from './example/list/mym.module';
 import { TopToolbarModule } from './shared/top-toolbar/top-toolbar.module';
+import { AppRoutingModule } from './app-routing.module';
+import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
+
+import { ManufacturerModule } from './manufacturer/manufacturer.module';
+
 
 // An NgModule is a class adorned with the @NgModule decorator function
 @NgModule({
@@ -22,7 +27,9 @@ import { TopToolbarModule } from './shared/top-toolbar/top-toolbar.module';
     BrowserModule,
     BrowserAnimationsModule,
     MymModule,
-    TopToolbarModule
+    TopToolbarModule,
+    ManufacturerModule,
+    AppRoutingModule
     // BrowserAnimationsModule,
     // MdButtonModule,
     // MdCheckboxModule,
@@ -31,7 +38,9 @@ import { TopToolbarModule } from './shared/top-toolbar/top-toolbar.module';
     // HttpClientModule
     // must include this module.
   ],
-  declarations: [ MyNgFirstAppComponent ],
+  declarations: [ MyNgFirstAppComponent,
+  PageNotFoundComponent,
+  ],
   providers: [
     {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true}
   ],
