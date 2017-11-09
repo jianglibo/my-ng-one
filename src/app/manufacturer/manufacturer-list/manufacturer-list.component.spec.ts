@@ -7,11 +7,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { DataStore } from '../../services/data-store';
-import { HttpDatastoreService } from '../../http-datastore.service';
+import { HttpDatastoreService } from '../../services/http-datastore.service';
 import { HttpDatastore } from '../../services/http-datastore';
 import {HttpClientModule, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { DatastoreUtilService } from '../../services/datastore-util.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import { ManufacturerDatasource } from '../manufacturer-datasource';
+
+let httpDatastoreServiceStub = {};
 
 fdescribe('ManufacturerListComponent', () => {
   let component: ManufacturerListComponent;
@@ -22,7 +25,7 @@ fdescribe('ManufacturerListComponent', () => {
       imports: [MatIconModule, MatListModule, MatTableModule, MatCheckboxModule,
          MatPaginatorModule, MatSortModule, BrowserAnimationsModule, MatFormFieldModule, MatInputModule,
          HttpClientModule, HttpClientTestingModule],
-      providers: [{provide: HttpDatastore, useClass: HttpDatastoreService}, HttpClient, DatastoreUtilService],
+      providers: [{provide: HttpDatastore, useValue: httpDatastoreServiceStub}],
       declarations: [ ManufacturerListComponent ]
     })
     .compileComponents();
@@ -32,12 +35,11 @@ fdescribe('ManufacturerListComponent', () => {
     console.log('xxxxxxxxxxxxxxxxxxx');
     fixture = TestBed.createComponent(ManufacturerListComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
     console.log('bbbbbbbbbbbbbbb');
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
-
 });

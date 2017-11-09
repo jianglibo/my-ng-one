@@ -1,7 +1,7 @@
 import { CommonDataSource } from '../services/common-datasource';
 import { ManufacturerAttributes } from '../dto/manufacturer-attributes';
 import { Manufacturer } from '../dto/manufacturer';
-import { HttpDatastoreService } from '../http-datastore.service';
+import { HttpDatastoreService } from '../services/http-datastore.service';
 import { MatSort, MatPaginator } from '@angular/material';
 import { ListBody } from '../dto/list-body';
 import { Observable } from 'rxjs/Observable';

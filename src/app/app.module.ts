@@ -38,8 +38,7 @@ import { ManufacturerModule } from './manufacturer/manufacturer.module';
     // HttpClientModule
     // must include this module.
   ],
-  declarations: [ MyNgFirstAppComponent,
-  PageNotFoundComponent,
+  declarations: [ MyNgFirstAppComponent, PageNotFoundComponent
   ],
   providers: [
     {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true}

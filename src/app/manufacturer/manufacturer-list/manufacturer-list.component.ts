@@ -35,6 +35,7 @@ export class ManufacturerListComponent implements OnInit {
     }
 
     ngOnInit() {
+      console.log(this.dataStore);
       this.dataSource = new ManufacturerDatasource(this.dataStore, this.paginator, this.sort);
       Observable.fromEvent(this.filter.nativeElement, 'keyup')
           .debounceTime(150)
@@ -47,17 +48,19 @@ export class ManufacturerListComponent implements OnInit {
     }
 
     isAllSelected(): boolean {
+      console.log('kkkkkkkkkkkkkkk');
       if (!this.dataSource) { return false; }
       if (this.selection.isEmpty()) { return false; }
-
+      return false;
       // if (this.filter.nativeElement.value) {
-        return this.selection.selected.length === this.dataSource.renderedData.length;
+        // return this.selection.selected.length === this.dataSource.renderedData.length;
       // } else {
       //   return this.selection.selected.length === this.exampleDatabase.data.length;
       // }
     }
 
     masterToggle() {
+      console.log('yyyyyyyyyyyyyyyyyyy');
       if (!this.dataSource) { return; }
 
       if (this.isAllSelected()) {

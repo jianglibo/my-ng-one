@@ -3,9 +3,10 @@ import { DataSource } from '@angular/cdk/collections';
 import { JsonapiObject, AttributesBase } from '../dto/jsonapi-object';
 import { Observable } from 'rxjs/Observable';
 import { MatSort, MatPaginator } from '@angular/material';
-import { HttpDatastoreService } from '../http-datastore.service';
+import { HttpDatastoreService } from './http-datastore.service';
 import { JsonapiObjectType, FilterPhrase, SortPhrase, DataStore } from './data-store';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/observable/of';
 import { ListBody } from '../dto/list-body';
 import { Pager } from './datastore-util.service';
  /**
@@ -34,22 +35,24 @@ import { Pager } from './datastore-util.service';
       console.log('commonDatasource construct.');
       // Reset to the first page when the user changes the filter.
       this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
+      console.log('commonDatasource construct done.');
     }
 
     /** Connect function called by the table to retrieve one stream containing the data to render. */
     connect(): Observable<J[]> {
       // Listen for any changes in the base data, sorting, filtering, or pagination
+      console.log('connect method called.');
       const displayDataChanges = [
         this._sort.sortChange,
         this._filterChange,
-        this._paginator.page,
+        this._paginator.page
       ];
-      console.log('connect method called.');
+
       return Observable.merge(...displayDataChanges)
         .startWith(null)
         .switchMap(() => {
             this.isLoadingResults = true;
-            return  this.findAll();
+            return this.findAll();
           }
         ).map(listBody => {
           this.isLoadingResults = false;

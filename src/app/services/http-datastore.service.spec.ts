@@ -2,20 +2,20 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { HttpDatastoreService } from './http-datastore.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { DatastoreUtilService, Pager } from './services/datastore-util.service';
-import { LoginAttempt } from './dto/login-attempt';
+import { DatastoreUtilService, Pager } from './datastore-util.service';
+import { LoginAttempt } from '../dto/login-attempt';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/reduce';
-import { JsonApiError } from './services/http-datastore-base';
+import { JsonApiError } from './http-datastore';
 import { HttpErrorResponse } from '@angular/common/http';
-import { LOGIN_FAIL_BODY } from './fixtures/loginfailure';
-import { USERS_BODY } from './fixtures/usersgetlist';
-import { User } from './dto/user';
-import { UserAttributes, Gender } from './dto/user-attributes';
-import { LoginAttemptAttributes } from './dto/login-attempt-attributes';
-import { USER_BODY } from './fixtures/usersgetone';
-import { LOGIN_SUCCESS_BODY } from './fixtures/loginsuccess';
+import { LOGIN_FAIL_BODY } from '../fixtures/loginfailure';
+import { USERS_BODY } from '../fixtures/usersgetlist';
+import { User } from '../dto/user';
+import { UserAttributes, Gender } from '../dto/user-attributes';
+import { LoginAttemptAttributes } from '../dto/login-attempt-attributes';
+import { USER_BODY } from '../fixtures/usersgetone';
+import { LOGIN_SUCCESS_BODY } from '../fixtures/loginsuccess';
 
 describe('HttpDatastoreService', () => {
   beforeEach(() => {
