@@ -17,7 +17,7 @@ export interface JsonApiError {
 }
 
 
-export class HttpDatastoreBase implements DataStore {
+export class HttpDatastore implements DataStore {
 
   constructor(private http: HttpClient,
     private dutil: DatastoreUtilService,

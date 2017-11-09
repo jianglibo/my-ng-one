@@ -27,22 +27,22 @@ describe('DatastoreUtilService', () => {
     expect(url).toBe('/jsonapi/loginAttempts?page[cursor]=555');
 
     url = service.getListUrl(LoginAttempt, null,
-      [{fname: 'username', descending: true}, {fname: 'password', descending: false}],
+      [{fname: 'username', direction: 'desc'}, {fname: 'password', direction: 'asc'}],
       [{fname: 'username', value: 'a'}], '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts?sort=-username,password&filter[username]=a');
 
     url = service.getListUrl(LoginAttempt, null,
-      [{fname: 'username', descending: true}, {fname: 'password', descending: false}],
+      [{fname: 'username', direction: 'desc'}, {fname: 'password', direction: 'asc'}],
       {fname: 'username', value: 'a'}, '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts?sort=-username,password&filter[username]=a');
 
     url = service.getListUrl(LoginAttempt, null,
-      {fname: 'username', descending: true},
+      {fname: 'username', direction: 'desc'},
       [{fname: 'username', value: 'a'}], '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts?sort=-username&filter[username]=a');
 
     url = service.getListUrl(LoginAttempt, null,
-      {fname: 'username', descending: true},
+      {fname: 'username', direction: 'desc'},
       {fname: 'username', value: 'a'}, '/jsonapi/');
     expect(url).toBe('/jsonapi/loginAttempts?sort=-username&filter[username]=a');
   }));

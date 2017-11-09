@@ -5,7 +5,7 @@ import { JsonapiObject, Relationship } from './jsonapi-object';
 type RelationNames = 'mtSerieses';
 
 @DtoDescription({
-    nameInUrl: 'posts',
+    nameInUrl: 'manufacturers',
 })
 export class Manufacturer extends JsonapiObject<ManufacturerAttributes> {
     constructor(attributes: ManufacturerAttributes) {

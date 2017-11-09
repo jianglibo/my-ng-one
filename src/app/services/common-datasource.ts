@@ -4,8 +4,10 @@ import { JsonapiObject, AttributesBase } from '../dto/jsonapi-object';
 import { Observable } from 'rxjs/Observable';
 import { MatSort, MatPaginator } from '@angular/material';
 import { HttpDatastoreService } from '../http-datastore.service';
-import { JsonapiObjectType } from './data-store';
+import { JsonapiObjectType, FilterPhrase, SortPhrase, DataStore } from './data-store';
 import 'rxjs/add/operator/switchMap';
+import { ListBody } from '../dto/list-body';
+import { Pager } from './datastore-util.service';
  /**
    * Data source to provide what data should be rendered in the table. Note that the data source
    * can retrieve its data in any way. In this case, the data source is provided a reference
@@ -18,15 +20,18 @@ import 'rxjs/add/operator/switchMap';
     get filter(): string { return this._filterChange.value; }
     set filter(filter: string) { this._filterChange.next(filter); }
 
-    filteredData: J[] = [];
+    resultsLength = 0;
+    isLoadingResults = false;
+
+    // filteredData: J[] = [];
     renderedData: J[] = [];
 
-    constructor(private _dataStore: HttpDatastoreService,
-                private _type: JsonapiObjectType<A, J>,
-                private _paginator: MatPaginator,
-                private _sort: MatSort) {
+    constructor(protected _dataStore: DataStore,
+                protected _type: JsonapiObjectType<A, J>,
+                protected _paginator: MatPaginator,
+                protected _sort: MatSort) {
       super();
-
+      console.log('commonDatasource construct.');
       // Reset to the first page when the user changes the filter.
       this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
     }
@@ -39,14 +44,22 @@ import 'rxjs/add/operator/switchMap';
         this._filterChange,
         this._paginator.page,
       ];
-
+      console.log('connect method called.');
       return Observable.merge(...displayDataChanges)
         .startWith(null)
         .switchMap(() => {
-              return this._dataStore.findAll(this._type);
+            this.isLoadingResults = true;
+            return  this.findAll();
           }
         ).map(listBody => {
-          return listBody.data;
+          this.isLoadingResults = false;
+          this.resultsLength = listBody.meta.totalResourceCount;
+          this.renderedData = listBody.data;
+          return this.renderedData;
+      }).catch(() => {
+        console.log("connect exception catched.");
+        this.isLoadingResults = false;
+        return Observable.of([]);
       });
     //   .map(() => {
     //     // Filter data
@@ -65,6 +78,23 @@ import 'rxjs/add/operator/switchMap';
     //     this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
     //     return this.renderedData;
     //   });
+    }
+
+    transOffsetLimit(): Pager {
+      return {offset: this._paginator.pageIndex * this._paginator.pageSize, limit: this._paginator.pageSize};
+    }
+
+    transSort(): SortPhrase[] {
+      return [{fname: this._sort.active, direction: this._sort.direction}];
+    }
+
+    transFilter(): FilterPhrase[] {
+      return [{fname: this.filter, value: ''}];
+    }
+
+    findAll(): Observable<ListBody<A, J>> {
+      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+      return this._dataStore.findAll(this._type, this.transOffsetLimit(), this.transSort(), this.transFilter());
     }
 
     disconnect() {}

@@ -9,9 +9,11 @@ export interface JsonapiObjectType<E extends AttributesBase, T extends JsonapiOb
     new(attr: E): T;
 }
 
+export type SortWay = 'asc' | 'desc' | '';
+
 export interface SortPhrase {
     fname: string;
-    descending: boolean;
+    direction: SortWay;
 }
 
 export interface FilterPhrase {

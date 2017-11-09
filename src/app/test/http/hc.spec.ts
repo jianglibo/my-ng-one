@@ -14,7 +14,7 @@ const loginErrorBody = {
     } ]
   };
 
-describe('httpclient usage.', () => {
+describe('httpClient usage.', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, HttpClientTestingModule],

@@ -60,8 +60,15 @@ function getSortParams(sort: SortPhrase[] | SortPhrase): string {
       sort = [sort];
     }
     sortstr = sort.map((v, i, a) => {
-      return v.descending ? '-' + v.fname : v.fname;
-    }).join(',');
+      switch (v.direction) {
+        case 'asc':
+          return v.fname;
+        case 'desc':
+          return '-' + v.fname;
+        default:
+          return null;
+      }
+    }).filter(itm => itm != null).join(',');
   }
   return sortstr;
 }
