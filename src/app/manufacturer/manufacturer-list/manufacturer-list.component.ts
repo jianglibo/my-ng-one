@@ -23,7 +23,7 @@ import { HttpDatastore } from '../../services/http-datastore';
 export class ManufacturerListComponent implements OnInit {
     displayedColumns = ['select', 'userId', 'userName', 'progress', 'color'];
     // exampleDatabase = new ExampleDatabase();
-    selection = new SelectionModel<string>(true, []);
+    selection = new SelectionModel<String>(true, []);
     dataSource: ManufacturerDatasource | null;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;

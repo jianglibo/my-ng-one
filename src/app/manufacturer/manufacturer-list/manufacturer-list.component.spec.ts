@@ -9,14 +9,13 @@ import {MatInputModule} from '@angular/material/input';
 import { DataStore } from '../../services/data-store';
 import { HttpDatastoreService } from '../../services/http-datastore.service';
 import { HttpDatastore } from '../../services/http-datastore';
-import {HttpClientModule, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { DatastoreUtilService } from '../../services/datastore-util.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import { ManufacturerDatasource } from '../manufacturer-datasource';
 
 let httpDatastoreServiceStub = {};
 
-fdescribe('ManufacturerListComponent', () => {
+describe('ManufacturerListComponent', () => {
   let component: ManufacturerListComponent;
   let fixture: ComponentFixture<ManufacturerListComponent>;
 
@@ -24,7 +23,7 @@ fdescribe('ManufacturerListComponent', () => {
     TestBed.configureTestingModule({
       imports: [MatIconModule, MatListModule, MatTableModule, MatCheckboxModule,
          MatPaginatorModule, MatSortModule, BrowserAnimationsModule, MatFormFieldModule, MatInputModule,
-         HttpClientModule, HttpClientTestingModule],
+          HttpClientTestingModule],
       providers: [{provide: HttpDatastore, useValue: httpDatastoreServiceStub}],
       declarations: [ ManufacturerListComponent ]
     })
