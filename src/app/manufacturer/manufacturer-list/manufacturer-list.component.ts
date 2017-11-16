@@ -14,6 +14,9 @@ import { ManufacturerDatasource } from '../manufacturer-datasource';
 import { DataStore } from '../../services/data-store';
 import { Manufacturer } from '../../dto/manufacturer';
 import { HttpDatastore } from '../../services/http-datastore';
+import { CommonDataSource } from '../../services/common-datasource';
+import { ManufacturerAttributes } from '../../dto/manufacturer-attributes';
+import { ManufacturerService } from '../manufacturer.service';
 
 @Component({
   selector: 'app-manufacturer-list',
@@ -21,7 +24,7 @@ import { HttpDatastore } from '../../services/http-datastore';
   styleUrls: ['./manufacturer-list.component.css']
 })
 export class ManufacturerListComponent implements OnInit {
-    displayedColumns = ['select', 'userId', 'userName', 'progress', 'color'];
+    displayedColumns = ['select', 'id', 'name', 'nationality', 'logo'];
     // exampleDatabase = new ExampleDatabase();
     selection = new SelectionModel<String>(true, []);
     dataSource: ManufacturerDatasource | null;
@@ -30,13 +33,11 @@ export class ManufacturerListComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild('filter') filter: ElementRef;
 
-    constructor(private dataStore: HttpDatastore) {
-
+    constructor(private _manufactoryService: ManufacturerService) {
     }
 
     ngOnInit() {
-      console.log(this.dataStore);
-      this.dataSource = new ManufacturerDatasource(this.dataStore, this.paginator, this.sort);
+      this.dataSource = this._manufactoryService.getDatasource().initDatasource(this.paginator, this.sort);
       Observable.fromEvent(this.filter.nativeElement, 'keyup')
           .debounceTime(150)
           .distinctUntilChanged()
@@ -48,7 +49,6 @@ export class ManufacturerListComponent implements OnInit {
     }
 
     isAllSelected(): boolean {
-      console.log('kkkkkkkkkkkkkkk');
       if (!this.dataSource) { return false; }
       if (this.selection.isEmpty()) { return false; }
       return false;
@@ -60,7 +60,6 @@ export class ManufacturerListComponent implements OnInit {
     }
 
     masterToggle() {
-      console.log('yyyyyyyyyyyyyyyyyyy');
       if (!this.dataSource) { return; }
 
       if (this.isAllSelected()) {
@@ -69,7 +68,7 @@ export class ManufacturerListComponent implements OnInit {
       //   this.dataSource.renderedData.forEach(data => this.selection.select(data.id));
       } else {
         // this.exampleDatabase.data.forEach(data => this.selection.select(data.id));
-        this.dataSource.renderedData.forEach(data => this.selection.select(data.id));
+        this.dataSource.renderedData.forEach(data => this.selection.select(data.id as string));
       }
     }
   }

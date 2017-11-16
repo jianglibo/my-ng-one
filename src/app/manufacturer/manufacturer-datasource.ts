@@ -9,13 +9,7 @@ import { DataStore } from '../services/data-store';
 
 export class ManufacturerDatasource extends CommonDataSource<ManufacturerAttributes, Manufacturer> {
 
-    constructor(_dataStore: DataStore,
-        _paginator: MatPaginator,
-        _sort: MatSort) {
-            super(_dataStore, Manufacturer, _paginator, _sort);
+    constructor(_dataStore: DataStore) {
+            super(_dataStore, Manufacturer);
     }
-
-    // findAll(): Observable<ListBody<ManufacturerAttributes, Manufacturer>> {
-    //     return this._dataStore.findAll();
-    // }
 }

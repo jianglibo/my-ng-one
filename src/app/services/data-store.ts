@@ -1,9 +1,9 @@
 
 import { Observable } from 'rxjs/Observable';
-import { Pager } from './datastore-util.service';
 import { JsonapiObject, AttributesBase, AttributeType } from '../dto/jsonapi-object';
 import { ListBody } from '../dto/list-body';
 import { SingleBody } from '../dto/single-body';
+import { PageOffsetLimit, PageCursor, PageNumberSize } from './datastore-util.service';
 
 export interface JsonapiObjectType<E extends AttributesBase, T extends JsonapiObject<E>> {
     new(attr: E): T;
@@ -23,7 +23,7 @@ export interface FilterPhrase {
 
 export interface DataStore {
     findAll<E extends AttributesBase, T extends JsonapiObject<E>>(jsonapiObjectType: JsonapiObjectType<E, T>,
-        page: Pager,
+        page: PageOffsetLimit | PageCursor | PageNumberSize,
         sort: SortPhrase[],
         filter: FilterPhrase[],
         params?: any): Observable<ListBody<E, T>>;

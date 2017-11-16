@@ -13,7 +13,6 @@ import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.co
 
 import { ManufacturerModule } from './manufacturer/manufacturer.module';
 
-
 // An NgModule is a class adorned with the @NgModule decorator function
 @NgModule({
   imports: [
@@ -24,8 +23,7 @@ import { ManufacturerModule } from './manufacturer/manufacturer.module';
     ManufacturerModule,
     AppRoutingModule
   ],
-  declarations: [ MyNgFirstAppComponent, PageNotFoundComponent
-  ],
+  declarations: [ MyNgFirstAppComponent, PageNotFoundComponent ],
   providers: [
     {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true}
   ],

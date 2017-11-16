@@ -16,7 +16,7 @@ export abstract class JsonapiObject<E extends AttributesBase> {
     constructor(jt: any) {
         this.type = Reflect.getMetadata(DtoDescriptionKey, jt).nameInUrl;
     }
-    id: string;
+    id: string | number;
     type: string;
     links: {self: string};
     abstract attributes: E;

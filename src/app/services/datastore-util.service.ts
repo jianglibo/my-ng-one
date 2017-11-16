@@ -5,11 +5,22 @@ import { DtoDescriptionKey } from '../dto/dto-description';
 import { assertNever } from '../util/util';
 import { AttributesBase, JsonapiObject, AttributeType } from '../dto/jsonapi-object';
 
-interface PageNumberSize {number: number; size: number; }
-interface PageOffsetLimit {offset: number; limit: number; }
-interface PageCursor {cursor: number; }
+export interface PageNumberSize {number: number; size: number; }
+export interface PageOffsetLimit {offset: number; limit: number; }
+export interface PageCursor {cursor: number; }
 
-export type Pager = PageNumberSize | PageOffsetLimit | PageCursor;
+export function isPageNumberSize(pg: PageNumberSize | PageOffsetLimit | PageCursor): pg is PageNumberSize {
+  return (<PageNumberSize>pg).number !== undefined;
+}
+export function isPageOffsetLimit(pg: PageNumberSize | PageOffsetLimit | PageCursor): pg is PageOffsetLimit {
+  return (<PageOffsetLimit>pg).offset !== undefined;
+}
+
+export function isPageCursor(pg: PageNumberSize | PageOffsetLimit | PageCursor): pg is PageCursor {
+  return (<PageCursor>pg).cursor !== undefined;
+}
+
+// export type Pager = PageNumberSize | PageOffsetLimit | PageCursor;
 
 export function isOneObject<T>(oneOrMany: T[] | T): oneOrMany is T {
   return !(<T>oneOrMany instanceof Array);
@@ -19,21 +30,18 @@ export function isModelInstance<E extends AttributesBase, T extends JsonapiObjec
   return (<T>model).type !== undefined;
 }
 
-function getPagerParams(page: Pager): string {
-    let tpage: Pager;
+function getPagerParams(page: PageCursor | PageNumberSize | PageOffsetLimit): string {
+    // let tpage: Pager;
     let pagestr = '';
     if (page) {
-      if (page['number'] != null) {
-        tpage = page as PageNumberSize;
-        pagestr = `page[number]=${tpage.number}&page[size]=${tpage.size}`;
-      } else if (page['offset'] != null) {
-        tpage = page as PageOffsetLimit;
-        pagestr = `page[offset]=${tpage.offset}&page[limit]=${tpage.limit}`;
-      } else if (page['cursor'] != null) {
-        tpage = page as PageCursor;
-        pagestr = `page[cursor]=${tpage.cursor}`;
+      if (isPageNumberSize(page)) {
+        pagestr = `page[number]=${page.number}&page[size]=${page.size}`;
+      } else if (isPageOffsetLimit(page)) {
+        pagestr = `page[offset]=${page.offset}&page[limit]=${page.limit}`;
+      } else if (isPageCursor(page)) {
+        pagestr = `page[cursor]=${page.cursor}`;
       } else {
-        // throw new Error('Unexpected page format.');
+        throw new Error('Unexpected page format.');
         // silent.
       }
     }
@@ -79,7 +87,7 @@ export class DatastoreUtilService {
   constructor() { }
 
   getListUrl<E extends AttributesBase, T extends JsonapiObject<E>>(jsonapiObjectTypeOrString: JsonapiObjectType<E, T> | string,
-     page: Pager,
+     page: PageNumberSize | PageCursor | PageOffsetLimit,
      sort: SortPhrase[] | SortPhrase,
      filter: FilterPhrase[] | FilterPhrase,
      baseUrl = '/'): string {

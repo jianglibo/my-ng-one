@@ -8,7 +8,8 @@ import { JsonapiObjectType, FilterPhrase, SortPhrase, DataStore } from './data-s
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/of';
 import { ListBody } from '../dto/list-body';
-import { Pager } from './datastore-util.service';
+import { PageCursor, PageNumberSize, PageOffsetLimit } from './datastore-util.service';
+
  /**
    * Data source to provide what data should be rendered in the table. Note that the data source
    * can retrieve its data in any way. In this case, the data source is provided a reference
@@ -23,25 +24,30 @@ import { Pager } from './datastore-util.service';
 
     resultsLength = 0;
     isLoadingResults = false;
+    _paginator: MatPaginator;
+    _sort: MatSort;
 
     // filteredData: J[] = [];
     renderedData: J[] = [];
 
     constructor(protected _dataStore: DataStore,
-                protected _type: JsonapiObjectType<A, J>,
+                protected _type: JsonapiObjectType<A, J>/*,
                 protected _paginator: MatPaginator,
-                protected _sort: MatSort) {
+    protected _sort: MatSort*/) {
       super();
-      console.log('commonDatasource construct.');
       // Reset to the first page when the user changes the filter.
+    }
+
+    initDatasource(_paginator: MatPaginator, _sort: MatSort): CommonDataSource<A, J> {
+      this._paginator = _paginator;
+      this._sort = _sort;
       this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
-      console.log('commonDatasource construct done.');
+      return this;
     }
 
     /** Connect function called by the table to retrieve one stream containing the data to render. */
     connect(): Observable<J[]> {
       // Listen for any changes in the base data, sorting, filtering, or pagination
-      console.log('connect method called.');
       const displayDataChanges = [
         this._sort.sortChange,
         this._filterChange,
@@ -83,7 +89,7 @@ import { Pager } from './datastore-util.service';
     //   });
     }
 
-    transOffsetLimit(): Pager {
+    transOffsetLimit(): PageCursor | PageNumberSize | PageOffsetLimit {
       return {offset: this._paginator.pageIndex * this._paginator.pageSize, limit: this._paginator.pageSize};
     }
 
@@ -96,7 +102,6 @@ import { Pager } from './datastore-util.service';
     }
 
     findAll(): Observable<ListBody<A, J>> {
-      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       return this._dataStore.findAll(this._type, this.transOffsetLimit(), this.transSort(), this.transFilter());
     }
 

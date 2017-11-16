@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { DatastoreUtilService, Pager, isModelInstance } from './datastore-util.service';
+import { DatastoreUtilService, isModelInstance, PageCursor, PageNumberSize, PageOffsetLimit } from './datastore-util.service';
 import { ListBody } from '../dto/list-body';
 import { JsonapiObject, AttributesBase, AttributeType } from '../dto/jsonapi-object';
 import { SingleBody } from '../dto/single-body';
@@ -22,10 +22,10 @@ export class HttpDatastore implements DataStore {
   constructor(private http: HttpClient,
     private dutil: DatastoreUtilService,
     private baseUrl: string,
-    private defaultPager: Pager = {offset: 0, limit: 10}) {}
+    private defaultPager: {offset: 0, limit: 10}) {}
 
   findAll<E extends AttributesBase, T extends JsonapiObject<E>>(jsonapiObjectType: JsonapiObjectType<E, T>,
-    page?: Pager,
+    page?: PageCursor | PageNumberSize | PageOffsetLimit,
     sort?: SortPhrase[] | SortPhrase,
     filter?: FilterPhrase[] | FilterPhrase,
     params?: any): Observable<ListBody<E, T>> {

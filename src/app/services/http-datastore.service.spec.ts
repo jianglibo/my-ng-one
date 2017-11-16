@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { HttpDatastoreService } from './http-datastore.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { DatastoreUtilService, Pager } from './datastore-util.service';
+import { DatastoreUtilService } from './datastore-util.service';
 import { LoginAttempt } from '../dto/login-attempt';
 import { Observable } from 'rxjs/Observable';
 
@@ -133,4 +133,5 @@ describe('HttpDatastoreService', () => {
           expect(req.request.body['data']).toEqual(new LoginAttempt({username: '', password: ''}));
           httpMock.verify();
         }));
+
 });
