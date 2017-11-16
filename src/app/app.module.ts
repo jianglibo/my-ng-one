@@ -1,5 +1,5 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgModule } from '@angular/core';
 
@@ -10,14 +10,18 @@ import { MymModule } from './example/list/mym.module';
 import { TopToolbarModule } from './shared/top-toolbar/top-toolbar.module';
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
-
 import { ManufacturerModule } from './manufacturer/manufacturer.module';
+import { HttpDatastore } from './services/http-datastore';
+import { DatastoreUtilService } from './services/datastore-util.service';
+import { HttpDatastoreService } from './services/http-datastore.service';
+import { HttpClientModule } from '@angular/common/http';
 
 // An NgModule is a class adorned with the @NgModule decorator function
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MymModule,
     TopToolbarModule,
     ManufacturerModule,
@@ -25,7 +29,8 @@ import { ManufacturerModule } from './manufacturer/manufacturer.module';
   ],
   declarations: [ MyNgFirstAppComponent, PageNotFoundComponent ],
   providers: [
-    {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true}
+    {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true}, DatastoreUtilService,
+    {provide: HttpDatastore, useClass: HttpDatastoreService}
   ],
   bootstrap: [ MyNgFirstAppComponent ]
 })
