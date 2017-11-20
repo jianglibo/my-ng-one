@@ -1,36 +1,47 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import {MatFormFieldModule, MatSelectModule,
+  MatInputModule, MatPaginatorModule,
+  MatIconModule, MatListModule,
+  MatCheckboxModule, MatSortModule,
+  MatTableModule, MatOptionModule} from '@angular/material';
+
 import { ManufacturerListComponent } from './manufacturer-list/manufacturer-list.component';
 import { ManufacturerDetailComponent } from './manufacturer-detail/manufacturer-detail.component';
 
 import { ManufacturerRoutingModule } from './manufacturer-routing.module';
-import { MatIconModule, MatListModule, MatCheckboxModule, MatSortModule } from '@angular/material';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { ManufacturerService } from './manufacturer.service';
+import { ManufacturerCreateComponent } from './manufacturer-create/manufacturer-create.component';
+import { ManufacturerEditComponent } from './manufacturer-edit/manufacturer-edit.component';
+import { Manufacturer } from '../dto/manufacturer';
 
 
 @NgModule({
   imports: [
     CommonModule,
     ManufacturerRoutingModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatPaginatorModule,
     MatIconModule,
     MatListModule,
     MatCheckboxModule,
     MatSortModule,
     MatTableModule,
-    MatPaginatorModule,
-    MatFormFieldModule,
-    MatInputModule
+    MatOptionModule
   ],
   declarations: [
     ManufacturerDetailComponent,
-    ManufacturerListComponent
+    ManufacturerListComponent,
+    ManufacturerCreateComponent,
+    ManufacturerEditComponent
   ],
   providers: [ ManufacturerService ],
-  exports: [ManufacturerDetailComponent, ManufacturerListComponent]
+  exports: [ManufacturerDetailComponent,
+    ManufacturerListComponent,
+  ManufacturerCreateComponent,
+  ManufacturerEditComponent]
 })
 export class ManufacturerModule { }

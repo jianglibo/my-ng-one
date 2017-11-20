@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/reduce';
 import { JsonApiError } from './http-datastore';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { LOGIN_FAIL_BODY } from '../fixtures/loginfailure';
 import { USERS_BODY } from '../fixtures/usersgetlist';
 import { User } from '../dto/user';
@@ -21,7 +21,7 @@ describe('HttpDatastoreService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [HttpDatastoreService, DatastoreUtilService]
+      providers: [HttpClient, HttpDatastoreService, DatastoreUtilService]
     });
   });
 
@@ -42,7 +42,8 @@ describe('HttpDatastoreService', () => {
           expect(err.length).toBe(1);
           expect(err[0].code).toBe(LOGIN_FAIL_BODY.errors[0].code);
         });
-      const req = httpMock.expectOne('/jsonapi/loginAttempts?page[offset]=0&page[limit]=10');
+      // const req = httpMock.expectOne('/jsonapi/loginAttempts?page[offset]=0&page[limit]=10');
+      const req = httpMock.expectOne('/jsonapi/loginAttempts');
       req.flush(LOGIN_FAIL_BODY, { status: 400, statusText: 'xxx' });
       httpMock.verify();
     }));
@@ -58,7 +59,8 @@ describe('HttpDatastoreService', () => {
           expect(lr.data[0].attributes.gender).toBe("FEMALE");
           expect(lr.data[0].relationships.followers.links.related).toBe('http://localhost/jsonapi/users/1277956/followers');
         });
-        const req = httpMock.expectOne('/jsonapi/users?page[offset]=0&page[limit]=10');
+        // const req = httpMock.expectOne('/jsonapi/users?page[offset]=0&page[limit]=10');
+        const req = httpMock.expectOne('/jsonapi/users');
         req.flush(USERS_BODY, { status: 200 , statusText: 'OK'});
         httpMock.verify();
       }));
