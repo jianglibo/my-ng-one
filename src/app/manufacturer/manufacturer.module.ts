@@ -5,7 +5,8 @@ import {MatFormFieldModule, MatSelectModule,
   MatInputModule, MatPaginatorModule,
   MatIconModule, MatListModule,
   MatCheckboxModule, MatSortModule,
-  MatTableModule, MatOptionModule} from '@angular/material';
+  MatTableModule, MatOptionModule,
+  MatButtonModule, MatChipsModule} from '@angular/material';
 
 import { ManufacturerListComponent } from './manufacturer-list/manufacturer-list.component';
 import { ManufacturerDetailComponent } from './manufacturer-detail/manufacturer-detail.component';
@@ -15,6 +16,7 @@ import { ManufacturerService } from './manufacturer.service';
 import { ManufacturerCreateComponent } from './manufacturer-create/manufacturer-create.component';
 import { ManufacturerEditComponent } from './manufacturer-edit/manufacturer-edit.component';
 import { Manufacturer } from '../dto/manufacturer';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -30,7 +32,10 @@ import { Manufacturer } from '../dto/manufacturer';
     MatCheckboxModule,
     MatSortModule,
     MatTableModule,
-    MatOptionModule
+    MatOptionModule,
+    MatButtonModule,
+    MatChipsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     ManufacturerDetailComponent,

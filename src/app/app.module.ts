@@ -16,6 +16,9 @@ import { HttpDatastoreService } from './services/http-datastore.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MATERIAL_COMPATIBILITY_MODE} from '@angular/material';
+import { FuDirective } from './fu.directive';
+import { FuComponent } from './shared/fu/fu.component';
+import { FuIndicatorComponent } from './shared/fu-indicator/fu-indicator.component';
 
 
 
@@ -32,7 +35,7 @@ import { MATERIAL_COMPATIBILITY_MODE} from '@angular/material';
     ManufacturerModule,
     AppRoutingModule
   ],
-  declarations: [ MyNgFirstAppComponent, PageNotFoundComponent ],
+  declarations: [ MyNgFirstAppComponent, PageNotFoundComponent, FuDirective, FuComponent, FuIndicatorComponent ],
   providers: [
     {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true}, DatastoreUtilService,
     {provide: HttpDatastore, useClass: HttpDatastoreService}

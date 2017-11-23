@@ -1,0 +1,13 @@
+:host {
+    display: block;
+    white-space: nowrap;
+}
+   
+:host .progressbarcontainer {
+    display: inline-block;
+    width: 200px;
+}
+
+:host .filename {
+    display: inline-block;
+}

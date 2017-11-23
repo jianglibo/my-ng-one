@@ -11,7 +11,8 @@ import {MatFormFieldModule,
    MatListModule,
    MatCheckboxModule,
    MatSelectModule,
-   MatSortModule } from '@angular/material';
+   MatSortModule, MatButtonModule, MatChipsModule} from '@angular/material';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('ManufacturerCreateComponent', () => {
   let component: ManufacturerCreateComponent;
@@ -20,7 +21,9 @@ describe('ManufacturerCreateComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MatIconModule, MatListModule, MatTableModule, MatCheckboxModule, BrowserAnimationsModule,
-        MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule],
+        MatPaginatorModule, MatSortModule, MatFormFieldModule,
+        MatInputModule, MatOptionModule, MatSelectModule,
+      ReactiveFormsModule, MatButtonModule, MatChipsModule],
       declarations: [ ManufacturerCreateComponent ]
     })
     .compileComponents();
