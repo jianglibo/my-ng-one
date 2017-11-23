@@ -1,5 +1,5 @@
 <input type="file" #inputFile multiple accept="image/*" style="display:none" (change)="handleFiles(inputFile.files)">
 <a href="#" (click)="$event.preventDefault();inputFile.click()">Select some files</a>
 
-<app-fu-indicator *ngFor="let file of files" [file]="file" uploadUrl="/uploadfile">
+<app-fu-indicator *ngFor="let file of files" [file]="file" [uploadUrl]="uploadUrl">
 </app-fu-indicator>
