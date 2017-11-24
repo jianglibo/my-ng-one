@@ -1,13 +1,22 @@
-:host {
+/* :host {
     display: block;
     white-space: nowrap;
-}
+} */
    
 :host .progressbarcontainer {
-    display: inline-block;
     width: 200px;
 }
 
-:host .filename {
+/* :host .filename {
     display: inline-block;
-}
+
+} */
+
+.allChildrenInOneLine {
+    display: block;
+    white-space: nowrap;
+  }
+  
+  .childOfOneLine {
+    display: inline-block;
+  }

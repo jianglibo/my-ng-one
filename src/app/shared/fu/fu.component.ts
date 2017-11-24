@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient, HttpRequest, HttpHeaders, HttpEventType, HttpResponse } from '@angular/common/http';
+import { Medium } from '../../dto/medium';
 
 @Component({
   selector: 'app-fu',
@@ -12,10 +13,16 @@ export class FuComponent implements OnInit {
 
   files: File[] = [];
 
+  media: Medium[] = [];
+
   constructor() {
   }
 
   ngOnInit() {
+  }
+
+  onFileUploaded(ufs: Medium[]) {
+    this.media = this.media.concat(ufs);
   }
 
   handleFiles(fileList: FileList) {

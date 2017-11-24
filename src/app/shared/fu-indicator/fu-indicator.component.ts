@@ -24,12 +24,12 @@ export class FuIndicatorComponent implements OnInit {
   constructor(private uploadService: UploadService) { }
 
   ngOnInit() {
-
+    let that = this;
     this.uploadService.upload(this.file, this.uploadUrl).subscribe(function(v: number| Medium[]) {
       if (typeof v === 'number') {
-        this.percentDone = v;
+        that.percentDone = v;
       } else {
-        this.onFileUploaded.emit(v);
+        that.onFileUploaded.emit(v);
       }
     });
     // console.log("uploadUrl: " + this.uploadUrl);

@@ -1,4 +1,8 @@
-export const MEDIA_BY_IDS = {
+import { ListBody } from '../dto/list-body';
+import { MediumAttributes } from '../dto/medium-attributes';
+import { Medium } from '../dto/medium';
+
+export const MEDIA_BY_IDS: ListBody<MediumAttributes, Medium> = {
   "data" : [ {
     "id" : "524288",
     "type" : "media",
@@ -7,7 +11,7 @@ export const MEDIA_BY_IDS = {
       "size" : 61,
       "contentType" : "application/octet-stream",
       "url" : "http://localhost:80/uploaded/e42413a752f64421b614102a9f0f1f71.js",
-      "orignName" : "v.js",
+      "originName" : "v.js",
       "dtoAction" : null,
       "dtoApplyTo" : null
     },
@@ -36,7 +40,7 @@ export const MEDIA_BY_IDS = {
       "size" : 3815,
       "contentType" : "application/octet-stream",
       "url" : "http://localhost:80/uploaded/91d024d7540d47b28d591cf230534f4e.jpg",
-      "orignName" : "th.jpg",
+      "originName" : "th.jpg",
       "dtoAction" : null,
       "dtoApplyTo" : null
     },
