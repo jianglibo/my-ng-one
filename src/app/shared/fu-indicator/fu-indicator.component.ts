@@ -19,13 +19,13 @@ export class FuIndicatorComponent implements OnInit {
   @Input() uploadUrl: string;
 
 
-  @Output() onFileUploaded = new EventEmitter<Medium[]>();
+  @Output() onFileUploaded = new EventEmitter<Medium>();
 
   constructor(private uploadService: UploadService) { }
 
   ngOnInit() {
     let that = this;
-    this.uploadService.upload(this.file, this.uploadUrl).subscribe(function(v: number| Medium[]) {
+    this.uploadService.upload(this.file, this.uploadUrl).subscribe(function(v: number| Medium) {
       if (typeof v === 'number') {
         that.percentDone = v;
       } else {

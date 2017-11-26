@@ -11,7 +11,7 @@ export class UploadService {
 
   constructor(private http: HttpClient) { }
 
-  upload(file: File, uploadUrl: string): Observable<number | Medium[]> {
+  upload(file: File, uploadUrl: string): Observable<number | Medium> {
     return Observable.create(function subscribe(observer) {
       try {
         console.log("uploadUrl: " + uploadUrl);

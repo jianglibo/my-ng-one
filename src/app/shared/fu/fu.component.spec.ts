@@ -18,18 +18,18 @@ import { MEDIA_BY_IDS } from '../../fixtures/mediabyids';
 class UploadServiceMock {
     constructor() {
     }
-    upload(file: File, uploadUrl: string): Observable<number | Medium[]> {
+    upload(file: File, uploadUrl: string): Observable<number | Medium> {
       return Observable.create(function subscribe(observer) {
         observer.next(50);
         console.log("in observer.");
-        observer.next(MEDIA_BY_IDS.data);
+        observer.next(MEDIA_BY_IDS.data[0]);
         observer.complete();
       });
     }
   }
 
 
-fdescribe('FuComponent', () => {
+describe('FuComponent', () => {
   let component: FuComponent;
   let fixture: ComponentFixture<FuComponent>;
 
@@ -73,6 +73,6 @@ fdescribe('FuComponent', () => {
     expect(dls.length).toEqual(2);
 
     expect(dls[1].nativeElement.textContent).toBe("a");
-    expect(component.media.length).toEqual(2);
+    expect(component.media.length).toEqual(1);
   }));
 });

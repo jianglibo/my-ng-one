@@ -1,4 +1,8 @@
-export const MANUFACTURERS_BODY = {
+import { ListBody } from "../dto/list-body";
+import { ManufacturerAttributes } from "../dto/manufacturer-attributes";
+import { Manufacturer } from "../dto/manufacturer";
+
+export const MANUFACTURERS_BODY: ListBody<ManufacturerAttributes, Manufacturer> = {
   "data" : [ {
     "id" : "196609",
     "type" : "manufacturers",

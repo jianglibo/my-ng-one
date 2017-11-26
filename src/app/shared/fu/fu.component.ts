@@ -21,8 +21,8 @@ export class FuComponent implements OnInit {
   ngOnInit() {
   }
 
-  onFileUploaded(ufs: Medium[]) {
-    this.media = this.media.concat(ufs);
+  onFileUploaded(m: Medium) {
+    this.media.push(m);
   }
 
   handleFiles(fileList: FileList) {

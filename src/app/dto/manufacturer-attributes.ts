@@ -10,5 +10,5 @@ export class ManufacturerAttributes extends AttributesBase {
     legend: string;
     logo: string;
     slogan: string;
-    websites: {[key: string]: string; };
+    websites: {[key: string]: string};
 }

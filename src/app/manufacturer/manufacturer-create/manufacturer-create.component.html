@@ -1,29 +1,39 @@
  <form [formGroup]="manufacturerForm" novalidate class="example-container"  (ngSubmit)="onSubmit()">
   <mat-form-field>
-    <input matInput placeholder="Input" formControlName="name">
+    <input matInput placeholder="name" formControlName="name">
   </mat-form-field>
 
   <mat-form-field>
-      <input matInput placeholder="Input" formControlName="foundTime">
+      <input type="date" matInput placeholder="foundTime" formControlName="foundTime">
   </mat-form-field>
 
   <mat-form-field>
-      <input matInput placeholder="Input" formControlName="nationality">
+      <input matInput placeholder="founder" formControlName="founder">
+  </mat-form-field>
+
+  <mat-form-field>
+      <input matInput placeholder="nationality" formControlName="nationality">
+  </mat-form-field>
+  <div>
+  <mat-form-field>
+      <input matInput placeholder="slogan" formControlName="slogan">
   </mat-form-field>
   
   <mat-form-field>
-      <input matInput placeholder="Input" formControlName="slogan">
+      <input matInput placeholder="logo" formControlName="logo">
   </mat-form-field>
-  
-  <mat-form-field>
-      <input matInput placeholder="Input" formControlName="logo">
-  </mat-form-field>
+  <button type="button" mat-button>+</button>
+  </div>
+  <app-fu uploadUrl="/fileupload" maxSelect="1"></app-fu>
 
-  <input type="file" #fileInput placeholder="Upload file..." />
-  <button type="button" (click)="upload()">Upload</button>
+  <div formArrayName="websitepairs" class="well well-lg">
+        <div *ngFor="let website of websitepairs.controls; let i=index" [formGroupName]="i" >
+          <!-- The repeated address template -->
+        </div>
+   </div>
 
   <mat-form-field>
-    <textarea matInput placeholder="Textarea" formControlName="legend"></textarea>
+    <textarea matInput placeholder="legend" formControlName="legend"></textarea>
   </mat-form-field>
 
   <mat-form-field class="demo-chip-list">
@@ -50,7 +60,7 @@
     </mat-select>
   </mat-form-field>
 
-  <button mat-raised-button color="primary">Primary</button>
+  <button type="submit" mat-raised-button color="primary">Primary</button>
   </form>
 
   <p>Form value: {{ manufacturerForm.value | json }}</p>
