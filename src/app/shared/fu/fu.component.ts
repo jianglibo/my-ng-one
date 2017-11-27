@@ -9,7 +9,21 @@ import { Medium } from '../../dto/medium';
 })
 export class FuComponent implements OnInit {
   uploadUrl: string;
-  maxSelect = 1;
+  private _maxSelect = 1;
+
+  @Input()
+  set maxSelect(v: string) {
+    let i = parseInt(v, 10);
+    if (i > 0) {
+      this._maxSelect = i;
+    } else {
+      this._maxSelect = 1;
+    }
+  }
+
+  get allDone(): boolean {
+    return this.files.length === this.media.length;
+  }
 
   files: File[] = [];
 
@@ -26,10 +40,9 @@ export class FuComponent implements OnInit {
   }
 
   handleFiles(fileList: FileList) {
-    console.log(fileList);
-    console.log(typeof fileList);
     let localFiles: File[] = [];
-    for (let i = 0; i < fileList.length; i++) {
+    let max = fileList.length > this._maxSelect ? this._maxSelect : fileList.length;
+    for (let i = 0; i < max; i++) {
       localFiles.push(fileList.item(i));
     }
     this.files = localFiles;

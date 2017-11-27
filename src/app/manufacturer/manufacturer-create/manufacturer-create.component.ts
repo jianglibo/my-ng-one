@@ -2,8 +2,9 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { FormControl, FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { Manufacturer } from '../../dto/manufacturer';
 import { MatChipInputEvent } from '@angular/material';
-import { DtoUtil } from '../../dto-util';
+import { DtoUtil, NameValuePair, toDateInputValue } from '../../util/dto-util';
 import { ManufacturerService } from '../manufacturer.service';
+import { ManufacturerAttributes } from '../../dto/manufacturer-attributes';
 
 const ENTER = 13;
 const COMMA = 188;
@@ -34,21 +35,24 @@ export class ManufacturerCreateComponent implements OnInit, OnChanges {
 
   constructor(private manufacturerService: ManufacturerService, private fb: FormBuilder) {
     this.createForm();
+    this.manufacturer = new Manufacturer(new ManufacturerAttributes());
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes['manufacturer'].currentValue);
     if (this.manufacturer) {
       let mo = DtoUtil.cloneAttributes(this.manufacturer.attributes);
-      let wspairs: {name: string, url: string}[] = [];
+      let wspairs: NameValuePair[] = [];
       let wss = this.manufacturer.attributes.websites || {};
       for (const key in wss) {
         if (wss.hasOwnProperty(key)) {
           const element = wss[key];
-          wspairs.push({name: key, url: element});
+          wspairs.push({name: key, value: element});
         }
       }
-
+      console.log(this.manufacturer.attributes.foundTime);
+      let d: Date = new Date(this.manufacturer.attributes.foundTime as number);
+      mo.foundTime = toDateInputValue(d);
       delete mo.websites;
       // mo['websitepairs'] = wss;
       this.manufacturerForm.reset(mo);
@@ -56,24 +60,47 @@ export class ManufacturerCreateComponent implements OnInit, OnChanges {
     }
   }
 
-  prepareSaveManufacturer(): any {
-    throw new Error("Method not implemented.");
+  prepareSaveManufacturer(): ManufacturerAttributes {
+    const formModel = this.manufacturerForm.value;
+      // deep copy of form model lairs
+      const websitepairsDeepCopy = formModel.websitepairs.map(
+        (nvp: NameValuePair) => Object.assign({}, nvp)
+      ).map((nvp) => {
+        let o = {};
+        o[nvp.name] = nvp.value;
+        return o;
+      });
+      // return new `Hero` object containing a combination of original hero value(s)
+      // and deep copies of changed form model values
+      const saveManufacturer: ManufacturerAttributes = {
+        // addresses: formModel.secretLairs // <-- bad!
+        name: formModel.name,
+        foundTime: formModel.foundTime,
+        founder: formModel.founder,
+        nationality: formModel.nationality,
+        legend: formModel.legend,
+        logo: formModel.logo,
+        slogan: formModel.slogan,
+        websites: websitepairsDeepCopy as {[key: string]: string}
+      };
+      return saveManufacturer;
   }
 
   onSubmit() {
-    this.manufacturer = this.prepareSaveManufacturer();
+    this.manufacturer.attributes = this.prepareSaveManufacturer();
     this.manufacturerService.save(this.manufacturer).subscribe(/* error handling */);
     this.ngOnChanges(null);
   }
 
-  setWebsites(websites: {"name": string, "url": string}[]) {
+  setWebsites(websites: NameValuePair[]) {
     const addressFGs = websites.map(ws => this.fb.group(ws));
     const addressFormArray = this.fb.array(addressFGs);
     this.manufacturerForm.setControl('websitepairs', addressFormArray);
   }
 
   addWebsite() {
-    this.websitepairs.push(this.fb.group({name: '', url: ''}));
+    console.log('ws');
+    this.websitepairs.push(this.fb.group({name: '', value: ''}));
   }
 
   get websitepairs(): FormArray {
@@ -83,7 +110,7 @@ export class ManufacturerCreateComponent implements OnInit, OnChanges {
   createForm(): any {
     this.manufacturerForm = this.fb.group({
       name: '',
-      foundTime: '',
+      foundTime: null,
       founder: '',
       nationality: '',
       legend: '',

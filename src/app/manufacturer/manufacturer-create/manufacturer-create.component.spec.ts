@@ -28,6 +28,9 @@ import { Observable } from 'rxjs/Observable';
 import { HttpDatastore } from '../../services/http-datastore';
 import { ManufacturerDatasource } from '../manufacturer-datasource';
 import { ManufacturerService } from '../manufacturer.service';
+import { click } from '../../test/test-util';
+import { By } from '@angular/platform-browser';
+import { FormArray } from '@angular/forms/src/model';
 
 class HttpDatastoreServiceStub {
   findAll(jsonapiObjectType: Manufacturer,
@@ -62,14 +65,15 @@ let httpDatastoreServiceStub = new HttpDatastoreServiceStub();
 })
 class TestHostComponent {
   @ViewChild(ManufacturerCreateComponent) /* using viewChild we get access to the TestComponent which is a child of TestHostComponent */
-  public testComponent: any;
+  public testComponent: ManufacturerCreateComponent;
   public manufacturer: Manufacturer; /* this is the variable which is passed as input to the TestComponent */
 }
 
 
-fdescribe('ManufacturerCreateComponent', () => {
+describe('ManufacturerCreateComponent', () => {
   let component: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
+  let addWebsiteEl;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -88,6 +92,7 @@ fdescribe('ManufacturerCreateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
     component = fixture.componentInstance;
+    addWebsiteEl   = fixture.debugElement.query(By.css('.addWebsiteBtn')); // find hero
   });
 
   it('should create', () => {
@@ -95,12 +100,24 @@ fdescribe('ManufacturerCreateComponent', () => {
   });
 
   it('should initialize value.', fakeAsync(() => {
+    let fc: ManufacturerCreateComponent = component.testComponent;
+
     fixture.detectChanges();
-    component.manufacturer = MANUFACTURERS_BODY.data[0];
+    component.manufacturer = MANUFACTURER_BODY.data;
     // console.log(MANUFACTURER_BODY.data);
     fixture.detectChanges();
     tick();
     // component.manufacturer = MANUFACTURERS_BODY.data[1];
     fixture.detectChanges();
+    click(addWebsiteEl);
+    fixture.detectChanges();
+    let wss = fixture.debugElement.queryAll(By.css('.websitepairs'));
+    expect(wss.length).toEqual(3);
+    let fa: FormArray = fc.manufacturerForm.get('websitepairs') as FormArray;
+    fa.controls[2].setValue({name: "aurl", value: "xxxy"});
+    // fa.controls[2].get("name").setValue("aurl");
+    // fa.controls[2].get("value").setValue("xxxy");
+    let mfa: ManufacturerAttributes = fc.prepareSaveManufacturer();
+    expect(mfa.websites[2]['aurl']).toBe('xxxy');
   }));
 });

@@ -7,7 +7,7 @@ import { FuIndicatorComponent } from '../fu-indicator/fu-indicator.component';
 import { FileListMock } from '../../test/file-list-mock';
 import { FileMock } from '../../test/file-mock';
 import { UploadService } from '../../upload.service';
-import { Injectable } from '@angular/core';
+import { Injectable, Component, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Medium } from '../../dto/medium';
 import { By } from '@angular/platform-browser';
@@ -28,44 +28,56 @@ class UploadServiceMock {
     }
   }
 
+  @Component({
+    // tslint:disable-next-line:component-selector
+    selector : 'test-host-component',
+    template :
+    `<div><app-fu maxSelect="2"></app-fu></div>`
+  })
+  class TestHostComponent {
+    @ViewChild(FuComponent) /* using viewChild we get access to the TestComponent which is a child of TestHostComponent */
+    public testComponent: FuComponent;
+  }
 
-describe('FuComponent', () => {
-  let component: FuComponent;
-  let fixture: ComponentFixture<FuComponent>;
+@Component({
+  // tslint:disable-next-line:component-selector
+  selector : 'test-host-component',
+  template :
+  `<div><app-fu maxSelect="1"></app-fu></div>`
+})
+class TestHostSingleMaxSelectComponent {
+  @ViewChild(FuComponent) /* using viewChild we get access to the TestComponent which is a child of TestHostComponent */
+  public testComponent: FuComponent;
+}
+
+describe('FuComponent maxSelect is 2.', () => {
+  let component:  TestHostComponent;
+  let fixture: ComponentFixture<TestHostComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ MatProgressBarModule, HttpClientTestingModule],
-      declarations: [ FuComponent, FuDirective, FuIndicatorComponent ],
+      declarations: [ FuComponent, FuDirective, FuIndicatorComponent, TestHostComponent ],
       providers: [{provide: UploadService, useClass: UploadServiceMock}]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FuComponent);
+    fixture = TestBed.createComponent(TestHostComponent);
     component = fixture.componentInstance;
-    component.uploadUrl = "/fileupload";
+    component.testComponent.uploadUrl = "/fileupload";
   });
 
   it('should create', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
-    // fl = new FileListMock(new FileMock("a", 55), new FileMock("b", 66));
-    // component.handleFiles(fl);
-    // fixture.detectChanges();
   });
 
   it('should reflect async upload progress.', fakeAsync(() => {
     let dl: DebugElement;
-
     let fl: FileList = new FileListMock(new FileMock("a", 55));
-    component.handleFiles(fl);
-    fixture.detectChanges(); // update view with quote
-
-    dl = fixture.debugElement.query(By.css('[ng-reflect-value="50"]'));
-    expect(dl.nativeElement).toBeTruthy();
-    tick();                  // wait for async getQuote
+    component.testComponent.handleFiles(fl);
     fixture.detectChanges(); // update view with quote
     dl = fixture.debugElement.query(By.css('[ng-reflect-value="50"]'));
     expect(dl.nativeElement).toBeTruthy();
@@ -73,6 +85,59 @@ describe('FuComponent', () => {
     expect(dls.length).toEqual(2);
 
     expect(dls[1].nativeElement.textContent).toBe("a");
-    expect(component.media.length).toEqual(1);
+    expect(component.testComponent.media.length).toEqual(1);
+
+    fl = new FileListMock(new FileMock("a", 50), new FileMock("b", 60));
+    component.testComponent.handleFiles(fl);
+    fixture.detectChanges(); // update view with quote
+
+    dls = fixture.debugElement.queryAll(By.css('.childOfOneLine'));
+    expect(dls.length).toEqual(4);
+  }));
+});
+
+describe('FuComponent maxSelect is 1.', () => {
+  let component:  TestHostSingleMaxSelectComponent;
+  let fixture: ComponentFixture<TestHostSingleMaxSelectComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [ MatProgressBarModule, HttpClientTestingModule],
+      declarations: [ FuComponent, FuDirective, FuIndicatorComponent, TestHostSingleMaxSelectComponent ],
+      providers: [{provide: UploadService, useClass: UploadServiceMock}]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestHostSingleMaxSelectComponent);
+    component = fixture.componentInstance;
+    component.testComponent.uploadUrl = "/fileupload";
+  });
+
+  it('should create', () => {
+    fixture.detectChanges();
+    expect(component).toBeTruthy();
+  });
+
+  it('should reflect async upload progress.', fakeAsync(() => {
+    let dl: DebugElement;
+    let fl: FileList = new FileListMock(new FileMock("a", 55));
+    component.testComponent.handleFiles(fl);
+    fixture.detectChanges(); // update view with quote
+    dl = fixture.debugElement.query(By.css('[ng-reflect-value="50"]'));
+    expect(dl.nativeElement).toBeTruthy();
+    let dls: DebugElement[] = fixture.debugElement.queryAll(By.css('.childOfOneLine'));
+    expect(dls.length).toEqual(2);
+
+    expect(dls[1].nativeElement.textContent).toBe("a");
+    expect(component.testComponent.media.length).toEqual(1);
+
+    fl = new FileListMock(new FileMock("a", 50), new FileMock("b", 60));
+    component.testComponent.handleFiles(fl);
+    fixture.detectChanges(); // update view with quote
+
+    dls = fixture.debugElement.queryAll(By.css('.childOfOneLine'));
+    expect(dls.length).toEqual(2);
   }));
 });
