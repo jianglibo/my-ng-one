@@ -1,13 +1,15 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Manufacturer } from '../../dto/manufacturer';
 import { MatChipInputEvent } from '@angular/material';
 import { DtoUtil, NameValuePair, toDateInputValue } from '../../util/dto-util';
 import { ManufacturerService } from '../manufacturer.service';
 import { ManufacturerAttributes } from '../../dto/manufacturer-attributes';
+import { Medium } from '../../dto/medium';
+import { FuComponent } from '../../shared/fu/fu.component';
+import { ImageSelectorComponent } from '../../shared/image-selector/image-selector.component';
+import { NameValueComponent } from '../../shared/name-value/name-value.component';
 
-const ENTER = 13;
-const COMMA = 188;
 
 @Component({
   selector: 'app-manufacturer-create',
@@ -19,19 +21,15 @@ export class ManufacturerCreateComponent implements OnInit, OnChanges {
 
   @Input() manufacturer: Manufacturer;
 
-  visible = true;
-  selectable = true;
-  removable = true;
-  addOnBlur = true;
+  @ViewChild(ImageSelectorComponent)
+  imageSelector: ImageSelectorComponent;
 
-  // Enter, comma
-  separatorKeysCodes = [ENTER, COMMA];
+  @ViewChild(NameValueComponent)
+  nameValues: NameValueComponent;
 
-  fruits = [
-    { name: 'Lemon' },
-    { name: 'Lime' },
-    { name: 'Apple' },
-  ];
+  websites: NameValuePair[] = [];
+
+
 
   constructor(private manufacturerService: ManufacturerService, private fb: FormBuilder) {
     this.createForm();
@@ -54,10 +52,23 @@ export class ManufacturerCreateComponent implements OnInit, OnChanges {
       let d: Date = new Date(this.manufacturer.attributes.foundTime as number);
       mo.foundTime = toDateInputValue(d);
       delete mo.websites;
-      // mo['websitepairs'] = wss;
       this.manufacturerForm.reset(mo);
-      this.setWebsites(wspairs);
+      // this.setWebsites(wspairs);
+      this.imageSelector.imgUrl = mo.logo;
+      this.setWebsites(this.manufacturer.attributes.websites);
     }
+  }
+
+  setWebsites(m: {[key: string]: string}): void {
+    const nameValuePairs = [];
+    if (m) {
+      for (const key in m) {
+        if (m.hasOwnProperty(key)) {
+          nameValuePairs.push({name: key, value: m[key]});
+        }
+      }
+    }
+    this.websites =  nameValuePairs;
   }
 
   prepareSaveManufacturer(): ManufacturerAttributes {
@@ -79,7 +90,7 @@ export class ManufacturerCreateComponent implements OnInit, OnChanges {
         founder: formModel.founder,
         nationality: formModel.nationality,
         legend: formModel.legend,
-        logo: formModel.logo,
+        logo: this.imageSelector.imgUrl,
         slogan: formModel.slogan,
         websites: websitepairsDeepCopy as {[key: string]: string}
       };
@@ -92,20 +103,20 @@ export class ManufacturerCreateComponent implements OnInit, OnChanges {
     this.ngOnChanges(null);
   }
 
-  setWebsites(websites: NameValuePair[]) {
-    const addressFGs = websites.map(ws => this.fb.group(ws));
-    const addressFormArray = this.fb.array(addressFGs);
-    this.manufacturerForm.setControl('websitepairs', addressFormArray);
-  }
+  // setWebsites(websites: NameValuePair[]) {
+  //   const addressFGs = websites.map(ws => this.fb.group(ws));
+  //   const addressFormArray = this.fb.array(addressFGs);
+  //   this.manufacturerForm.setControl('websitepairs', addressFormArray);
+  // }
 
-  addWebsite() {
-    console.log('ws');
-    this.websitepairs.push(this.fb.group({name: '', value: ''}));
-  }
+  // addWebsite() {
+  //   console.log('ws');
+  //   this.websitepairs.push(this.fb.group({name: '', value: ''}));
+  // }
 
-  get websitepairs(): FormArray {
-    return this.manufacturerForm.get('websitepairs') as FormArray;
-  }
+  // get websitepairs(): FormArray {
+  //   return this.manufacturerForm.get('websitepairs') as FormArray;
+  // }
 
   createForm(): any {
     this.manufacturerForm = this.fb.group({
@@ -114,7 +125,7 @@ export class ManufacturerCreateComponent implements OnInit, OnChanges {
       founder: '',
       nationality: '',
       legend: '',
-      logo: '',
+      logo: new FormControl({value: 'n/a', disabled: true}, Validators.required),
       slogan: '',
       websitepairs: this.fb.array([])
     });
@@ -123,28 +134,4 @@ export class ManufacturerCreateComponent implements OnInit, OnChanges {
   ngOnInit() {
     console.log("onInit");
   }
-
-  add(event: MatChipInputEvent): void {
-    let input = event.input;
-    let value = event.value;
-
-    // Add our person
-    if ((value || '').trim()) {
-      this.fruits.push({ name: value.trim() });
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  remove(fruit: any): void {
-    let index = this.fruits.indexOf(fruit);
-
-    if (index >= 0) {
-      this.fruits.splice(index, 1);
-    }
-  }
-
 }

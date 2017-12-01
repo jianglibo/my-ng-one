@@ -1,0 +1,14 @@
+<div [formGroup]="myGroup" class="nvpairs-container">
+  <div>网址列表：<a href="#" (click)="$event.preventDefault ? $event.preventDefault() : '';addNameValue();" class="add-name-value-btn">+</a></div>
+  <div formArrayName="nvFormArray">
+        <div *ngFor="let nv of nvFormArray.controls; let i=index" [formGroupName]="i" class="nvpair-container">
+            <mat-form-field>
+                <input matInput placeholder="name" formControlName="name">
+            </mat-form-field>
+            
+            <mat-form-field style="width:80%;">
+                <input matInput placeholder="url" formControlName="value">
+            </mat-form-field>
+        </div>
+  </div>
+</div>

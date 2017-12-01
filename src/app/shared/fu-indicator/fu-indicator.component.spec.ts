@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { MEDIA_BY_IDS } from '../../fixtures/mediabyids';
 import { Medium } from '../../dto/medium';
 import { UploadService } from '../../upload.service';
+import { UploadServiceMock } from '../../test/upload-mock-service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -20,22 +21,7 @@ class TestHostComponent {
   file = {name: "abc"};
 }
 
-
-@Injectable()
-class UploadServiceMock {
-    constructor() {
-    }
-    upload(file: File, uploadUrl: string): Observable<number | Medium> {
-      return Observable.create(function subscribe(observer) {
-        observer.next(50);
-        console.log("in observer.");
-        observer.next(MEDIA_BY_IDS.data[0]);
-        observer.complete();
-      });
-    }
-  }
-
-fdescribe('FuIndicatorComponent', () => {
+describe('FuIndicatorComponent', () => {
   let component: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
   let uploadService: UploadService;
@@ -57,7 +43,6 @@ fdescribe('FuIndicatorComponent', () => {
     spy = spyOn(uploadService, 'upload').and.returnValue(
       Observable.create(function subscribe(observer) {
         observer.next(50);
-        console.log("in observer.");
         observer.next(MEDIA_BY_IDS.data[0]);
         observer.complete();
       })

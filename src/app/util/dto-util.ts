@@ -1,6 +1,5 @@
 import { extend } from "webdriver-js-extender";
 import { AttributesBase } from "../dto/jsonapi-object";
-import { type } from "os";
 
 export class DtoUtil {
     static cloneAttributes<T extends AttributesBase>(attr: T) {

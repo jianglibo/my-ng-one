@@ -1,0 +1,6 @@
+<div>
+<img *ngIf="imgUrl" [src]="imgUrl"/>
+<span *ngIf="!imgUrl">{{noImgTitle}}</span>
+</div>
+
+<app-fu uploadUrl="/fileupload" maxSelect="1" [selectorTitle]="selectorTitle" (onOneFileUploaded)="onImgUploaded($event);"></app-fu>

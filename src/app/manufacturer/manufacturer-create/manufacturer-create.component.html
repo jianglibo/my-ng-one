@@ -15,16 +15,22 @@
       <input matInput placeholder="nationality" formControlName="nationality">
   </mat-form-field>
   <mat-form-field>
-      <input matInput placeholder="slogan" formControlName="slogan">
-  </mat-form-field>
-  <div>
-  <mat-form-field style="width:80%;">
-      <input matInput placeholder="logo" formControlName="logo">
+      <input matInput placeholder="slogan" formControlName="slogan" disabled>
   </mat-form-field>
 
-  <app-fu uploadUrl="/fileupload" maxSelect="1"></app-fu>
-    </div> 
-  <div>网址列表：<a href="#" (click)="$event.preventDefault ? $event.preventDefault() : '';addWebsite();" class="addWebsiteBtn">+</a></div>
+  <app-image-selector></app-image-selector>
+
+  <!-- <div class="fu-field"> -->
+  <!-- <mat-form-field style="width:80%;"> -->
+      <!-- want disabled take effect, must delete formControlName property. -->
+      <!-- <input matInput #disabledLogo placeholder="logo" [disabled]="true"> -->
+      <!-- <input matInput #disabledLogo placeholder="logo" formControlName="logo"> -->
+  <!-- </mat-form-field> -->
+  <!-- <app-fu uploadUrl="/fileupload" maxSelect="1" (onOneFileUploaded)="disabledLogo.value=$event.attributes.url;onLogoUploaded($event);"></app-fu> -->
+  <!-- </div>  -->
+
+  <!-- <div>网址列表：<a href="#" (click)="$event.preventDefault ? $event.preventDefault() : '';addWebsite();" class="addWebsiteBtn">+</a></div>
+  
   <div formArrayName="websitepairs">
         <div *ngFor="let website of websitepairs.controls; let i=index" [formGroupName]="i" class="websitepairs">
             <mat-form-field>
@@ -34,9 +40,10 @@
             <mat-form-field style="width:80%;">
                 <input matInput placeholder="url" formControlName="value">
             </mat-form-field>
-          <!-- The repeated address template -->
         </div>
-   </div>
+   </div> -->
+
+   <app-name-value [nameValuePairs]="websites"></app-name-value>
 
   <mat-form-field>
     <textarea matInput placeholder="legend" formControlName="legend"></textarea>

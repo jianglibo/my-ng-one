@@ -17,6 +17,7 @@ import { ManufacturerCreateComponent } from './manufacturer-create/manufacturer-
 import { ManufacturerEditComponent } from './manufacturer-edit/manufacturer-edit.component';
 import { Manufacturer } from '../dto/manufacturer';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatOptionModule,
     MatButtonModule,
     MatChipsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [
     ManufacturerDetailComponent,
@@ -47,6 +49,6 @@ import { ReactiveFormsModule } from '@angular/forms';
   exports: [ManufacturerDetailComponent,
     ManufacturerListComponent,
   ManufacturerCreateComponent,
-  ManufacturerEditComponent]
+  ManufacturerEditComponent ]
 })
 export class ManufacturerModule { }

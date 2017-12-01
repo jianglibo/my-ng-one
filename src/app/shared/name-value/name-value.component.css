@@ -1,0 +1,14 @@
+.nvpairs-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+.nvpairs-container> * {
+    width: 100%;
+}
+
+.nvpair-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}

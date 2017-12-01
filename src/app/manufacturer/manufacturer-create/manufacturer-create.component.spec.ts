@@ -13,12 +13,12 @@ import {MatFormFieldModule,
    MatSelectModule,
    MatProgressBarModule,
    MatSortModule, MatButtonModule, MatChipsModule} from '@angular/material';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormArray } from '@angular/forms';
 import { FuComponent } from '../../shared/fu/fu.component';
 import { FuIndicatorComponent } from '../../shared/fu-indicator/fu-indicator.component';
 import { MANUFACTURER_BODY } from '../../fixtures/manufacturergetone';
 import { MANUFACTURERS_BODY } from '../../fixtures/manufacturergetlist';
-import { Component, ViewChild, Injectable } from '@angular/core';
+import { Component, ViewChild, Injectable, DebugElement } from '@angular/core';
 import { Manufacturer } from '../../dto/manufacturer';
 import { PageCursor, PageNumberSize, PageOffsetLimit, isPageOffsetLimit } from '../../services/datastore-util.service';
 import { SortPhrase, FilterPhrase } from '../../services/data-store';
@@ -30,7 +30,14 @@ import { ManufacturerDatasource } from '../manufacturer-datasource';
 import { ManufacturerService } from '../manufacturer.service';
 import { click } from '../../test/test-util';
 import { By } from '@angular/platform-browser';
-import { FormArray } from '@angular/forms/src/model';
+import { FileListMock } from '../../test/file-list-mock';
+import { FileMock } from '../../test/file-mock';
+import { UploadService } from '../../upload.service';
+import { UploadServiceMock } from '../../test/upload-mock-service';
+import { ImageSelectorComponent } from '../../shared/image-selector/image-selector.component';
+import { NameValueComponent } from '../../shared/name-value/name-value.component';
+
+const URL_IN_FIXTURE = 'http://localhost:80/uploaded/e42413a752f64421b614102a9f0f1f71.js';
 
 class HttpDatastoreServiceStub {
   findAll(jsonapiObjectType: Manufacturer,
@@ -66,14 +73,14 @@ let httpDatastoreServiceStub = new HttpDatastoreServiceStub();
 class TestHostComponent {
   @ViewChild(ManufacturerCreateComponent) /* using viewChild we get access to the TestComponent which is a child of TestHostComponent */
   public testComponent: ManufacturerCreateComponent;
+
   public manufacturer: Manufacturer; /* this is the variable which is passed as input to the TestComponent */
 }
-
 
 describe('ManufacturerCreateComponent', () => {
   let component: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
-  let addWebsiteEl;
+  // let addWebsiteEl;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -82,9 +89,9 @@ describe('ManufacturerCreateComponent', () => {
         MatInputModule, MatOptionModule, MatSelectModule,
       ReactiveFormsModule, MatButtonModule, MatChipsModule, MatProgressBarModule],
       declarations: [TestHostComponent, ManufacturerCreateComponent,
-         FuComponent, FuIndicatorComponent ],
+         FuComponent, FuIndicatorComponent, ImageSelectorComponent, NameValueComponent ],
       providers: [{provide: HttpDatastore, useValue: httpDatastoreServiceStub},
-        {provide: ManufacturerService, useClass: ManufacturerServiceMock}]
+        {provide: ManufacturerService, useClass: ManufacturerServiceMock}, {provide: UploadService, useClass: UploadServiceMock}]
     })
     .compileComponents();
   }));
@@ -92,7 +99,7 @@ describe('ManufacturerCreateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
     component = fixture.componentInstance;
-    addWebsiteEl   = fixture.debugElement.query(By.css('.addWebsiteBtn')); // find hero
+    // addWebsiteEl   = fixture.debugElement.query(By.css('.addWebsiteBtn')); // find hero
   });
 
   it('should create', () => {
@@ -100,24 +107,16 @@ describe('ManufacturerCreateComponent', () => {
   });
 
   it('should initialize value.', fakeAsync(() => {
-    let fc: ManufacturerCreateComponent = component.testComponent;
+    let dls: DebugElement[];
+    let dl: DebugElement;
 
+    let fc: ManufacturerCreateComponent = component.testComponent;
     fixture.detectChanges();
     component.manufacturer = MANUFACTURER_BODY.data;
-    // console.log(MANUFACTURER_BODY.data);
+
+    component.manufacturer = MANUFACTURER_BODY.data;
     fixture.detectChanges();
-    tick();
-    // component.manufacturer = MANUFACTURERS_BODY.data[1];
-    fixture.detectChanges();
-    click(addWebsiteEl);
-    fixture.detectChanges();
-    let wss = fixture.debugElement.queryAll(By.css('.websitepairs'));
-    expect(wss.length).toEqual(3);
-    let fa: FormArray = fc.manufacturerForm.get('websitepairs') as FormArray;
-    fa.controls[2].setValue({name: "aurl", value: "xxxy"});
-    // fa.controls[2].get("name").setValue("aurl");
-    // fa.controls[2].get("value").setValue("xxxy");
-    let mfa: ManufacturerAttributes = fc.prepareSaveManufacturer();
-    expect(mfa.websites[2]['aurl']).toBe('xxxy');
+    dls = fixture.debugElement.queryAll(By.css('.nvpair-container'));
+    expect(dls.length).toEqual(2);
   }));
 });

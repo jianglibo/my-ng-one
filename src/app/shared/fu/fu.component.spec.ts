@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { FuComponent } from './fu.component';
-import { FuDirective } from '../../fu.directive';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import { FuIndicatorComponent } from '../fu-indicator/fu-indicator.component';
 import { FileListMock } from '../../test/file-list-mock';
@@ -21,31 +20,19 @@ class UploadServiceMock {
     upload(file: File, uploadUrl: string): Observable<number | Medium> {
       return Observable.create(function subscribe(observer) {
         observer.next(50);
-        console.log("in observer.");
         observer.next(MEDIA_BY_IDS.data[0]);
         observer.complete();
       });
     }
   }
 
-  @Component({
-    // tslint:disable-next-line:component-selector
-    selector : 'test-host-component',
-    template :
-    `<div><app-fu maxSelect="2"></app-fu></div>`
-  })
-  class TestHostComponent {
-    @ViewChild(FuComponent) /* using viewChild we get access to the TestComponent which is a child of TestHostComponent */
-    public testComponent: FuComponent;
-  }
-
 @Component({
   // tslint:disable-next-line:component-selector
   selector : 'test-host-component',
   template :
-  `<div><app-fu maxSelect="1"></app-fu></div>`
+  `<div><app-fu maxSelect="2"></app-fu></div>`
 })
-class TestHostSingleMaxSelectComponent {
+class TestHostComponent {
   @ViewChild(FuComponent) /* using viewChild we get access to the TestComponent which is a child of TestHostComponent */
   public testComponent: FuComponent;
 }
@@ -57,7 +44,7 @@ describe('FuComponent maxSelect is 2.', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ MatProgressBarModule, HttpClientTestingModule],
-      declarations: [ FuComponent, FuDirective, FuIndicatorComponent, TestHostComponent ],
+      declarations: [ FuComponent, FuIndicatorComponent, TestHostComponent ],
       providers: [{provide: UploadService, useClass: UploadServiceMock}]
     })
     .compileComponents();
@@ -66,12 +53,14 @@ describe('FuComponent maxSelect is 2.', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
     component = fixture.componentInstance;
-    component.testComponent.uploadUrl = "/fileupload";
   });
 
-  it('should create', () => {
+  it('should has default selectorTitle.', () => {
     fixture.detectChanges();
-    expect(component).toBeTruthy();
+    let dls: DebugElement[];
+    dls = fixture.debugElement.queryAll(By.css('a'));
+    expect(dls.length).toBe(1);
+    expect(dls[0].nativeElement.textContent).toBe('Please Select a File.');
   });
 
   it('should reflect async upload progress.', fakeAsync(() => {
@@ -96,6 +85,23 @@ describe('FuComponent maxSelect is 2.', () => {
   }));
 });
 
+
+@Component({
+  // tslint:disable-next-line:component-selector
+  selector : 'test-host-component',
+  template :
+  `<div>
+    <input #testInput type="text">
+    <app-fu maxSelect="1" selectorTitle="hello" (onOneFileUploaded)="testInput.value=$event.attributes.url;ok();"></app-fu>
+  </div>`
+})
+class TestHostSingleMaxSelectComponent {
+  @ViewChild(FuComponent) /* using viewChild we get access to the TestComponent which is a child of TestHostComponent */
+  public testComponent: FuComponent;
+  ok() {
+  }
+}
+
 describe('FuComponent maxSelect is 1.', () => {
   let component:  TestHostSingleMaxSelectComponent;
   let fixture: ComponentFixture<TestHostSingleMaxSelectComponent>;
@@ -103,7 +109,7 @@ describe('FuComponent maxSelect is 1.', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ MatProgressBarModule, HttpClientTestingModule],
-      declarations: [ FuComponent, FuDirective, FuIndicatorComponent, TestHostSingleMaxSelectComponent ],
+      declarations: [ FuComponent, FuIndicatorComponent, TestHostSingleMaxSelectComponent ],
       providers: [{provide: UploadService, useClass: UploadServiceMock}]
     })
     .compileComponents();
@@ -139,5 +145,11 @@ describe('FuComponent maxSelect is 1.', () => {
 
     dls = fixture.debugElement.queryAll(By.css('.childOfOneLine'));
     expect(dls.length).toEqual(2);
+
+    dl = fixture.debugElement.query(By.css('input'));
+    expect(dl.nativeElement.value).toBe('http://localhost:80/uploaded/e42413a752f64421b614102a9f0f1f71.js');
+
+    dl = fixture.debugElement.query(By.css('a'));
+    expect(dl.nativeElement.textContent).toBe('hello');
   }));
 });

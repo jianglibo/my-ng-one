@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpRequest, HttpHeaders, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Medium } from '../../dto/medium';
 
@@ -12,17 +12,21 @@ export class FuComponent implements OnInit {
   private _maxSelect = 1;
 
   @Input()
-  set maxSelect(v: string) {
-    let i = parseInt(v, 10);
-    if (i > 0) {
-      this._maxSelect = i;
-    } else {
-      this._maxSelect = 1;
-    }
-  }
+  selectorTitle = 'Please Select a File.';
 
-  get allDone(): boolean {
-    return this.files.length === this.media.length;
+  @Output() onOneFileUploaded = new EventEmitter<Medium>();
+  @Output() onAllFileUploaded = new EventEmitter<Medium[]>();
+
+  @Input()
+  set maxSelect(v: string) {
+    if (v) {
+      let i = parseInt(v, 10);
+      if (i > 0) {
+        this._maxSelect = i;
+      } else {
+        this._maxSelect = 1;
+      }
+    }
   }
 
   files: File[] = [];
@@ -37,6 +41,10 @@ export class FuComponent implements OnInit {
 
   onFileUploaded(m: Medium) {
     this.media.push(m);
+    this.onOneFileUploaded.emit(m);
+    if (this.files.length === this.media.length) {
+      this.onAllFileUploaded.emit(this.media);
+    }
   }
 
   handleFiles(fileList: FileList) {
