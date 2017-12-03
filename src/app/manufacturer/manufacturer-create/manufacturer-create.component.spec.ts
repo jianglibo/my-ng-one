@@ -28,14 +28,14 @@ import { Observable } from 'rxjs/Observable';
 import { HttpDatastore } from '../../services/http-datastore';
 import { ManufacturerDatasource } from '../manufacturer-datasource';
 import { ManufacturerService } from '../manufacturer.service';
-import { click } from '../../test/test-util';
 import { By } from '@angular/platform-browser';
-import { FileListMock } from '../../test/file-list-mock';
-import { FileMock } from '../../test/file-mock';
 import { UploadService } from '../../upload.service';
-import { UploadServiceMock } from '../../test/upload-mock-service';
 import { ImageSelectorComponent } from '../../shared/image-selector/image-selector.component';
 import { NameValueComponent } from '../../shared/name-value/name-value.component';
+import { SingleBody } from '../../dto/single-body';
+import { UploadServiceMock } from '../../../test/upload-mock-service';
+import { ActivatedRouteStub } from '../../../test/activated-route-stub';
+import { ActivatedRoute } from '@angular/router';
 
 const URL_IN_FIXTURE = 'http://localhost:80/uploaded/e42413a752f64421b614102a9f0f1f71.js';
 
@@ -61,6 +61,9 @@ class ManufacturerServiceMock {
        mfds.resultsLength = 12;
        return mfds;
      }
+     save(manufacturer: Manufacturer): Observable<SingleBody<ManufacturerAttributes, Manufacturer>> {
+      return null;
+     }
   }
 let httpDatastoreServiceStub = new HttpDatastoreServiceStub();
 
@@ -80,7 +83,6 @@ class TestHostComponent {
 describe('ManufacturerCreateComponent', () => {
   let component: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
-  // let addWebsiteEl;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -91,7 +93,9 @@ describe('ManufacturerCreateComponent', () => {
       declarations: [TestHostComponent, ManufacturerCreateComponent,
          FuComponent, FuIndicatorComponent, ImageSelectorComponent, NameValueComponent ],
       providers: [{provide: HttpDatastore, useValue: httpDatastoreServiceStub},
-        {provide: ManufacturerService, useClass: ManufacturerServiceMock}, {provide: UploadService, useClass: UploadServiceMock}]
+        {provide: ManufacturerService, useClass: ManufacturerServiceMock},
+        {provide: ActivatedRoute, useClass: ActivatedRouteStub},
+        {provide: UploadService, useClass: UploadServiceMock}]
     })
     .compileComponents();
   }));
@@ -99,11 +103,6 @@ describe('ManufacturerCreateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHostComponent);
     component = fixture.componentInstance;
-    // addWebsiteEl   = fixture.debugElement.query(By.css('.addWebsiteBtn')); // find hero
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should initialize value.', fakeAsync(() => {
@@ -111,12 +110,40 @@ describe('ManufacturerCreateComponent', () => {
     let dl: DebugElement;
 
     let fc: ManufacturerCreateComponent = component.testComponent;
-    fixture.detectChanges();
     component.manufacturer = MANUFACTURER_BODY.data;
 
-    component.manufacturer = MANUFACTURER_BODY.data;
     fixture.detectChanges();
     dls = fixture.debugElement.queryAll(By.css('.nvpair-container'));
     expect(dls.length).toEqual(2);
+  }));
+
+  it('should create new empty manufacturer.', fakeAsync(() => {
+    let mf = new Manufacturer(new ManufacturerAttributes());
+    console.log(mf);
+  }));
+
+  it('should submit form.', fakeAsync(() => {
+    let dls: DebugElement[];
+    let dl: DebugElement;
+
+    let mService = fixture.debugElement.injector.get(ManufacturerService);
+
+    let lb = MANUFACTURER_BODY as SingleBody<ManufacturerAttributes, Manufacturer>;
+    let singleResponse = Observable.of(lb);
+      // Setup spy on the `getQuote` method
+     let  spy = spyOn(mService, 'save')
+            .and.returnValue(singleResponse);
+
+    dls = fixture.debugElement.queryAll(By.css('button[type=submit]'));
+    expect(dls.length).toBe(1);
+
+    dl = fixture.debugElement.query(By.css('button[type=submit]'));
+    expect(dl).toBeTruthy();
+    component.manufacturer = MANUFACTURER_BODY.data;
+    fixture.detectChanges();
+    component.testComponent.onSubmit();
+    expect(spy.calls.count()).toBe(1, "method should be called once.");
+    let p1 = spy.calls.argsFor(0);
+    console.log(p1);
   }));
 });

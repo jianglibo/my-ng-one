@@ -9,6 +9,7 @@ import { Medium } from '../../dto/medium';
 import { FuComponent } from '../../shared/fu/fu.component';
 import { ImageSelectorComponent } from '../../shared/image-selector/image-selector.component';
 import { NameValueComponent } from '../../shared/name-value/name-value.component';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -25,19 +26,18 @@ export class ManufacturerCreateComponent implements OnInit, OnChanges {
   imageSelector: ImageSelectorComponent;
 
   @ViewChild(NameValueComponent)
-  nameValues: NameValueComponent;
+  nameValuesComp: NameValueComponent;
 
   websites: NameValuePair[] = [];
 
-
-
-  constructor(private manufacturerService: ManufacturerService, private fb: FormBuilder) {
+  constructor(private manufacturerService: ManufacturerService,
+     private route: ActivatedRoute,
+     private fb: FormBuilder) {
     this.createForm();
     this.manufacturer = new Manufacturer(new ManufacturerAttributes());
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes['manufacturer'].currentValue);
     if (this.manufacturer) {
       let mo = DtoUtil.cloneAttributes(this.manufacturer.attributes);
       let wspairs: NameValuePair[] = [];
@@ -48,7 +48,6 @@ export class ManufacturerCreateComponent implements OnInit, OnChanges {
           wspairs.push({name: key, value: element});
         }
       }
-      console.log(this.manufacturer.attributes.foundTime);
       let d: Date = new Date(this.manufacturer.attributes.foundTime as number);
       mo.foundTime = toDateInputValue(d);
       delete mo.websites;
@@ -99,24 +98,13 @@ export class ManufacturerCreateComponent implements OnInit, OnChanges {
 
   onSubmit() {
     this.manufacturer.attributes = this.prepareSaveManufacturer();
-    this.manufacturerService.save(this.manufacturer).subscribe(/* error handling */);
+    this.manufacturerService.save(this.manufacturer).subscribe(singleBody => {
+      console.log(singleBody);
+    }, err => {
+      console.log(err);
+    });
     this.ngOnChanges(null);
   }
-
-  // setWebsites(websites: NameValuePair[]) {
-  //   const addressFGs = websites.map(ws => this.fb.group(ws));
-  //   const addressFormArray = this.fb.array(addressFGs);
-  //   this.manufacturerForm.setControl('websitepairs', addressFormArray);
-  // }
-
-  // addWebsite() {
-  //   console.log('ws');
-  //   this.websitepairs.push(this.fb.group({name: '', value: ''}));
-  // }
-
-  // get websitepairs(): FormArray {
-  //   return this.manufacturerForm.get('websitepairs') as FormArray;
-  // }
 
   createForm(): any {
     this.manufacturerForm = this.fb.group({
@@ -125,13 +113,12 @@ export class ManufacturerCreateComponent implements OnInit, OnChanges {
       founder: '',
       nationality: '',
       legend: '',
-      logo: new FormControl({value: 'n/a', disabled: true}, Validators.required),
+      // logo: new FormControl({value: 'n/a', disabled: true}, Validators.required),
       slogan: '',
       websitepairs: this.fb.array([])
     });
   }
 
   ngOnInit() {
-    console.log("onInit");
   }
 }

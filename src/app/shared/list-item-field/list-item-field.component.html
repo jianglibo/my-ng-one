@@ -1,4 +1,3 @@
-<div>
   <mat-form-field class="demo-chip-list">
       <mat-chip-list matPrefix #chipList>
         <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"
@@ -13,4 +12,3 @@
              [matChipInputAddOnBlur]="addOnBlur"
              (matChipInputTokenEnd)="add($event)" />
   </mat-form-field>
-</div>

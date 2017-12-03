@@ -10,8 +10,6 @@ import { MatProgressBarModule } from '@angular/material';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FuIndicatorComponent } from '../fu-indicator/fu-indicator.component';
 import { UploadService } from '../../upload.service';
-import { FileMock } from '../../test/file-mock';
-import { FileListMock } from '../../test/file-list-mock';
 import { By } from '@angular/platform-browser';
 
 @Injectable()

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { MEDIA_BY_IDS } from '../../fixtures/mediabyids';
 import { Medium } from '../../dto/medium';
 import { UploadService } from '../../upload.service';
-import { UploadServiceMock } from '../../test/upload-mock-service';
+import { UploadServiceMock } from '../../../test/upload-mock-service';
 
 @Component({
   // tslint:disable-next-line:component-selector

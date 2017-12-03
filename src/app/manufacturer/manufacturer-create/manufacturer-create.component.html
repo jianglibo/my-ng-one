@@ -15,33 +15,10 @@
       <input matInput placeholder="nationality" formControlName="nationality">
   </mat-form-field>
   <mat-form-field>
-      <input matInput placeholder="slogan" formControlName="slogan" disabled>
+      <input matInput placeholder="slogan" formControlName="slogan">
   </mat-form-field>
 
   <app-image-selector></app-image-selector>
-
-  <!-- <div class="fu-field"> -->
-  <!-- <mat-form-field style="width:80%;"> -->
-      <!-- want disabled take effect, must delete formControlName property. -->
-      <!-- <input matInput #disabledLogo placeholder="logo" [disabled]="true"> -->
-      <!-- <input matInput #disabledLogo placeholder="logo" formControlName="logo"> -->
-  <!-- </mat-form-field> -->
-  <!-- <app-fu uploadUrl="/fileupload" maxSelect="1" (onOneFileUploaded)="disabledLogo.value=$event.attributes.url;onLogoUploaded($event);"></app-fu> -->
-  <!-- </div>  -->
-
-  <!-- <div>网址列表：<a href="#" (click)="$event.preventDefault ? $event.preventDefault() : '';addWebsite();" class="addWebsiteBtn">+</a></div>
-  
-  <div formArrayName="websitepairs">
-        <div *ngFor="let website of websitepairs.controls; let i=index" [formGroupName]="i" class="websitepairs">
-            <mat-form-field>
-                <input matInput placeholder="name" formControlName="name">
-            </mat-form-field>
-            
-            <mat-form-field style="width:80%;">
-                <input matInput placeholder="url" formControlName="value">
-            </mat-form-field>
-        </div>
-   </div> -->
 
    <app-name-value [nameValuePairs]="websites"></app-name-value>
 
@@ -49,32 +26,6 @@
     <textarea matInput placeholder="legend" formControlName="legend"></textarea>
   </mat-form-field>
 
-  <!--
-  <div>
-  <mat-form-field class="demo-chip-list">
-      <mat-chip-list matPrefix #chipList>
-        <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"
-                 [removable]="removable" (remove)="remove(fruit)">
-          {{fruit.name}}
-          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-        </mat-chip>
-      </mat-chip-list>
-      <input matInput placeholder="New fruit..."
-             [matChipInputFor]="chipList"
-             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-             [matChipInputAddOnBlur]="addOnBlur"
-             (matChipInputTokenEnd)="add($event)" />
-  </mat-form-field>
-  </div>
-  <mat-form-field>
-    <mat-select placeholder="Select">
-        <mat-option>None</mat-option>
-        <mat-option value="option1">Option 1</mat-option>
-        <mat-option value="option2">Option 2</mat-option>
-        <mat-option value="option3">Option 3</mat-option>
-    </mat-select>
-  </mat-form-field>
--->
   <button type="submit" mat-raised-button color="primary">Primary</button>
   </form>
 

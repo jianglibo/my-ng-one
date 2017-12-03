@@ -10,7 +10,7 @@ const manufacturerRoutes: Routes = [
   { path: 'manufacturers',  component: ManufacturerListComponent },
   { path: 'manufacturers/create', component: ManufacturerCreateComponent },
   { path: 'manufacturers/display/:id', component: ManufacturerDetailComponent },
-  { path: 'manufacturers/edit/:id', component: ManufacturerEditComponent }
+  { path: 'manufacturers/edit/:id', component: ManufacturerCreateComponent }
 ];
 
 @NgModule({
