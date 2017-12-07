@@ -17,6 +17,10 @@ export class ManufacturerService {
    }
 
    save(manufacturer: Manufacturer): Observable<SingleBody<ManufacturerAttributes, Manufacturer>> {
-    return this._datastore.saveRecord(manufacturer);
+     if (manufacturer.id) {
+      return this._datastore.saveRecord(manufacturer);
+     } else {
+       return this._datastore.createRecord(Manufacturer, manufacturer);
+     }
    }
 }
