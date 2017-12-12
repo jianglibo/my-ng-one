@@ -1,14 +1,24 @@
-import { Injectable } from '@angular/core';
-import { DataStore, JsonapiObjectType, SortPhrase, FilterPhrase } from './data-store';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { DatastoreUtilService, isModelInstance, PageCursor, PageNumberSize, PageOffsetLimit } from './datastore-util.service';
-import { ListBody } from '../dto/list-body';
-import { JsonapiObject, AttributesBase, AttributeType } from '../dto/jsonapi-object';
-import { SingleBody } from '../dto/single-body';
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/catch";
+import "rxjs/add/observable/throw";
+import {
+  DataStore,
+  DatastoreUtil,
+  AttributesBase,
+  JsonapiObject,
+  JsonapiObjectType,
+  PageOffsetLimit,
+  PageNumberSize,
+  PageCursor,
+  SortPhrase,
+  FilterPhrase,
+  ListBody,
+  isModelInstance,
+  SingleBody
+} from "data-shape";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 
 export interface JsonApiError {
   code: string;
@@ -16,30 +26,44 @@ export interface JsonApiError {
   detail: string;
 }
 
-
 export class HttpDatastore implements DataStore {
-
-  constructor(private http: HttpClient,
-    private dutil: DatastoreUtilService,
+  constructor(
+    private http: HttpClient,
     private baseUrl: string,
-    private defaultPager: {offset: 0, limit: 10}) {}
+    private defaultPager: { offset: 0; limit: 10 }
+  ) {}
 
-  findAll<E extends AttributesBase, T extends JsonapiObject<E>>(jsonapiObjectType: JsonapiObjectType<E, T>,
+  findAll<E extends AttributesBase, T extends JsonapiObject<E>>(
+    jsonapiObjectType: JsonapiObjectType<E, T>,
     page?: PageCursor | PageNumberSize | PageOffsetLimit,
     sort?: SortPhrase[] | SortPhrase,
     filter?: FilterPhrase[] | FilterPhrase,
-    params?: any): Observable<ListBody<E, T>> {
-      if (page == null) {
-        page = this.defaultPager;
-      }
-      let url = this.dutil.getListUrl(jsonapiObjectType, page, sort, filter, this.baseUrl);
-      console.log(url);
-      return this.http.get<ListBody<E, T>>(url, {observe: 'response'}).map(resp => {
+    params?: any
+  ): Observable<ListBody<E, T>> {
+    if (page == null) {
+      page = this.defaultPager;
+    }
+    let url = DatastoreUtil.getListUrl(
+      jsonapiObjectType,
+      this.baseUrl,
+      page,
+      sort,
+      filter
+    );
+    console.log(url);
+    return this.http
+      .get<ListBody<E, T>>(url, { observe: "response" })
+      .map(resp => {
         let r = resp.body;
         return r;
-      }).catch((err: HttpErrorResponse) => {
+      })
+      .catch((err: HttpErrorResponse) => {
         // err.
-        if (err.error && err.error.errors && err.error.errors instanceof Array) {
+        if (
+          err.error &&
+          err.error.errors &&
+          err.error.errors instanceof Array
+        ) {
           return Observable.throw(err.error.errors as JsonApiError[]);
         }
         return Observable.throw(err);
@@ -47,14 +71,24 @@ export class HttpDatastore implements DataStore {
   }
 
   findRecord<E extends AttributesBase, T extends JsonapiObject<E>>(
-    jsonapiObjectType: JsonapiObjectType<E, T>, id: number | string, params?: any): Observable<SingleBody<E, T>> {
-      let url = this.dutil.getSingleUrl(jsonapiObjectType, id, this.baseUrl);
-      console.log(url);
-      return this.http.get<SingleBody<E, T>>(url, {observe: 'response'}).map(resp => {
+    jsonapiObjectType: JsonapiObjectType<E, T>,
+    id: number | string,
+    params?: any
+  ): Observable<SingleBody<E, T>> {
+    let url = DatastoreUtil.getSingleUrl(jsonapiObjectType, id, this.baseUrl);
+    console.log(url);
+    return this.http
+      .get<SingleBody<E, T>>(url, { observe: "response" })
+      .map(resp => {
         let r = resp.body;
         return r;
-      }).catch((err: HttpErrorResponse) => {
-        if (err.error && err.error.errors && err.error.errors instanceof Array) {
+      })
+      .catch((err: HttpErrorResponse) => {
+        if (
+          err.error &&
+          err.error.errors &&
+          err.error.errors instanceof Array
+        ) {
           return Observable.throw(err.error.errors as JsonApiError[]);
         }
         return Observable.throw(err);
@@ -62,27 +96,57 @@ export class HttpDatastore implements DataStore {
   }
 
   createRecord<E extends AttributesBase, T extends JsonapiObject<E>>(
-    jsonapiObjectType: JsonapiObjectType<E, T>, data: T): Observable<SingleBody<E, T>> {
-      let url = this.dutil.getListUrl(jsonapiObjectType, undefined, undefined, undefined, this.baseUrl);
-      return this.http.post<SingleBody<E, T>>(url, new SingleBody<E, T>(data), {observe: 'response'}).map(resp => {
+    jsonapiObjectType: JsonapiObjectType<E, T>,
+    data: T
+  ): Observable<SingleBody<E, T>> {
+    let url = DatastoreUtil.getListUrl(jsonapiObjectType, this.baseUrl);
+    return this.http
+      .post<SingleBody<E, T>>(url, new SingleBody<E, T>(data), {
+        observe: "response"
+      })
+      .map(resp => {
         let r = resp.body;
         return r;
-      }).catch((err: HttpErrorResponse) => {
-        if (err.error && err.error.errors && err.error.errors instanceof Array) {
+      })
+      .catch((err: HttpErrorResponse) => {
+        if (
+          err.error &&
+          err.error.errors &&
+          err.error.errors instanceof Array
+        ) {
           return Observable.throw(err.error.errors as JsonApiError[]);
         }
         return Observable.throw(err);
       });
   }
 
-  saveRecord<E extends AttributesBase, T extends JsonapiObject<E>>(model: T, params?: any): Observable<SingleBody<E, T>> {
-      let jsonapiObjectType: JsonapiObjectType<E, T> = <JsonapiObjectType<E, T>>model.constructor;
-      let url = this.dutil.getSingleUrl(jsonapiObjectType, model.id, this.baseUrl);
-      return this.http.patch<SingleBody<E, T>>(url, new SingleBody<E, T>(model), {observe: 'response'}).map(resp => {
+  saveRecord<E extends AttributesBase, T extends JsonapiObject<E>>(
+    model: T,
+    params?: any
+  ): Observable<SingleBody<E, T>> {
+    let jsonapiObjectType: JsonapiObjectType<E, T> = <JsonapiObjectType<
+      E,
+      T
+    >>model.constructor;
+    let url = DatastoreUtil.getSingleUrl(
+      jsonapiObjectType,
+      model.id,
+      this.baseUrl
+    );
+    return this.http
+      .patch<SingleBody<E, T>>(url, new SingleBody<E, T>(model), {
+        observe: "response"
+      })
+      .map(resp => {
         let r = resp.body;
         return r;
-      }).catch((err: HttpErrorResponse) => {
-        if (err.error && err.error.errors && err.error.errors instanceof Array) {
+      })
+      .catch((err: HttpErrorResponse) => {
+        if (
+          err.error &&
+          err.error.errors &&
+          err.error.errors instanceof Array
+        ) {
           return Observable.throw(err.error.errors as JsonApiError[]);
         }
         return Observable.throw(err);
@@ -99,27 +163,40 @@ export class HttpDatastore implements DataStore {
   404 NOT FOUND
   A server SHOULD return a 404 Not Found status code if a deletion request fails due to the resource not existing.
   */
-  deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(model: T): Observable<Response>;
   deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(
-    jsonapiObjectType: JsonapiObjectType<E, T>, id: string): Observable<Response>;
+    model: T
+  ): Observable<Response>;
+  deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(
+    jsonapiObjectType: JsonapiObjectType<E, T>,
+    id: string
+  ): Observable<Response>;
 
   deleteRecord<E extends AttributesBase, T extends JsonapiObject<E>>(
-    jsonapiObjectType: JsonapiObjectType<E, T> | T, id?: string | number): Observable<Response> {
-      let url: string;
-      if (isModelInstance(jsonapiObjectType)) {
-        url = this.dutil.getSingleUrl(jsonapiObjectType, this.baseUrl);
-      } else {
-        url = this.dutil.getSingleUrl(jsonapiObjectType, id, this.baseUrl);
-      }
-      return this.http.delete<SingleBody<E, T>>(url, {observe: 'response'}).map(resp => {
+    jsonapiObjectType: JsonapiObjectType<E, T> | T,
+    id?: string | number
+  ): Observable<Response> {
+    let url: string;
+    if (isModelInstance(jsonapiObjectType)) {
+      url = DatastoreUtil.getSingleUrl(jsonapiObjectType, this.baseUrl);
+    } else {
+      url = DatastoreUtil.getSingleUrl(jsonapiObjectType, id, this.baseUrl);
+    }
+    return this.http
+      .delete<SingleBody<E, T>>(url, { observe: "response" })
+      .map(resp => {
         switch (resp.status) {
           case 200:
             return resp.body;
           default:
             return null;
         }
-      }).catch((err: HttpErrorResponse) => {
-        if (err.error && err.error.errors && err.error.errors instanceof Array) {
+      })
+      .catch((err: HttpErrorResponse) => {
+        if (
+          err.error &&
+          err.error.errors &&
+          err.error.errors instanceof Array
+        ) {
           return Observable.throw(err.error.errors as JsonApiError[]);
         }
         return Observable.throw(err);

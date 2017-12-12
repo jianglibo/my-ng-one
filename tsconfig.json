@@ -9,8 +9,11 @@
     "experimentalDecorators": true,
     "target": "es5",
     "typeRoots": [
-      "node_modules/@types"
+      "node_modules/@types", "node_modules/data-shape/typings"
     ],
+    "paths": {
+
+    },
     "lib": [
       "es2017",
       "dom"

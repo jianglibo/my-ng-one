@@ -1,14 +1,11 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DataSource } from '@angular/cdk/collections';
-import { JsonapiObject, AttributesBase } from '../dto/jsonapi-object';
 import { Observable } from 'rxjs/Observable';
 import { MatSort, MatPaginator } from '@angular/material';
 import { HttpDatastoreService } from './http-datastore.service';
-import { JsonapiObjectType, FilterPhrase, SortPhrase, DataStore } from './data-store';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/of';
-import { ListBody } from '../dto/list-body';
-import { PageCursor, PageNumberSize, PageOffsetLimit } from './datastore-util.service';
+
 
  /**
    * Data source to provide what data should be rendered in the table. Note that the data source
@@ -102,7 +99,7 @@ import { PageCursor, PageNumberSize, PageOffsetLimit } from './datastore-util.se
     }
 
     findAll(): Observable<ListBody<A, J>> {
-      return this._dataStore.findAll(this._type, this.transOffsetLimit(), this.transSort(), this.transFilter());
+      return this._dataStore.findAll(this._type, undefined, this.transOffsetLimit(), this.transSort(), this.transFilter());
     }
 
     disconnect() {}
