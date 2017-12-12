@@ -15,7 +15,6 @@ import { ManufacturerRoutingModule } from './manufacturer-routing.module';
 import { ManufacturerService } from './manufacturer.service';
 import { ManufacturerCreateComponent } from './manufacturer-create/manufacturer-create.component';
 import { ManufacturerEditComponent } from './manufacturer-edit/manufacturer-edit.component';
-import { Manufacturer } from '../dto/manufacturer';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 

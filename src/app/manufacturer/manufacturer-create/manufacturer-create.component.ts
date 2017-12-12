@@ -1,11 +1,9 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
-import { Manufacturer } from '../../dto/manufacturer';
+import { Manufacturer, Medium, ManufacturerAttributes } from 'data-shape';
 import { MatChipInputEvent } from '@angular/material';
 import { DtoUtil, NameValuePair, toDateInputValue } from '../../util/dto-util';
 import { ManufacturerService } from '../manufacturer.service';
-import { ManufacturerAttributes } from '../../dto/manufacturer-attributes';
-import { Medium } from '../../dto/medium';
 import { FuComponent } from '../../shared/fu/fu.component';
 import { ImageSelectorComponent } from '../../shared/image-selector/image-selector.component';
 import { NameValueComponent } from '../../shared/name-value/name-value.component';

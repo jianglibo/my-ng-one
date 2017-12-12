@@ -8,6 +8,8 @@ import 'rxjs/add/operator/reduce';
 import { JsonApiError } from './http-datastore';
 import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 
+import { LoginAttempt, LOGIN_FAIL_BODY, User, USERS_BODY, USER_BODY, LOGIN_SUCCESS_BODY } from 'data-shape';
+
 describe('HttpDatastoreService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
