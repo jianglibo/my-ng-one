@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ImageSelectorComponent } from './image-selector/image-selector.component';
 import { FuComponent } from './fu/fu.component';
 import { FuIndicatorComponent } from './fu-indicator/fu-indicator.component';
-import { MatProgressBarModule, MatChipsModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatProgressBarModule, MatChipsModule, MatFormFieldModule, MatInputModule, MatIconModule } from '@angular/material';
 import { NameValueComponent } from './name-value/name-value.component';
 import { ListItemFieldComponent } from './list-item-field/list-item-field.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -16,7 +16,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatChipsModule,
     MatInputModule,
     MatFormFieldModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconModule
   ],
   declarations: [
     ImageSelectorComponent,

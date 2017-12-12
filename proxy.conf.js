@@ -3,7 +3,7 @@ const PROXY_CONFIG = [
         context: [
             "/jsonapi"
         ],
-        target: "https://jianglibo.com",
+        target: "http://localhost:3000",
         secure: false
         // ,
         // pathRewrite: {'^/jsonapi' : ''}

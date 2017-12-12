@@ -15,7 +15,6 @@ import { DatastoreUtilService } from './services/datastore-util.service';
 import { HttpDatastoreService } from './services/http-datastore.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { MATERIAL_COMPATIBILITY_MODE} from '@angular/material';
 
 
 
@@ -36,7 +35,7 @@ import { MATERIAL_COMPATIBILITY_MODE} from '@angular/material';
     PageNotFoundComponent
     ],
   providers: [
-    {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true}, DatastoreUtilService,
+    DatastoreUtilService,
     {provide: HttpDatastore, useClass: HttpDatastoreService}
   ],
   bootstrap: [ MyNgFirstAppComponent ]
