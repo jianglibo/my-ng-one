@@ -4,8 +4,7 @@ import { FuIndicatorComponent } from './fu-indicator.component';
 import { MatProgressBarModule } from '@angular/material';
 import { Injectable, Component, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { MEDIA_BY_IDS } from '../../fixtures/mediabyids';
-import { Medium } from '../../dto/medium';
+import { MEDIA_BY_IDS, Medium } from 'data-shape';
 import { UploadService } from '../../upload.service';
 import { UploadServiceMock } from '../../../test/upload-mock-service';
 

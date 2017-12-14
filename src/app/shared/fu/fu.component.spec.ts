@@ -6,10 +6,9 @@ import { FuIndicatorComponent } from '../fu-indicator/fu-indicator.component';
 import { UploadService } from '../../upload.service';
 import { Injectable, Component, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Medium } from '../../dto/medium';
+import { Medium, MEDIA_BY_IDS } from 'data-shape';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core/src/debug/debug_node';
-import { MEDIA_BY_IDS } from '../../fixtures/mediabyids';
 import { FileListMock } from '../../../test/file-list-mock';
 import { FileMock } from '../../../test/file-mock';
 

@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
-import { Medium } from "../app/dto/medium";
-import { MEDIA_BY_IDS } from "../app/fixtures/mediabyids";
+import { Medium, MEDIA_BY_IDS } from "data-shape";
 
 
 @Injectable()

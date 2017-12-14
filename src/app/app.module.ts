@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { ManufacturerModule } from './manufacturer/manufacturer.module';
 import { HttpDatastore } from './services/http-datastore';
-import { DatastoreUtilService } from './services/datastore-util.service';
+import { DatastoreUtil} from 'data-shape';
 import { HttpDatastoreService } from './services/http-datastore.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -35,7 +35,6 @@ import { FormsModule } from '@angular/forms';
     PageNotFoundComponent
     ],
   providers: [
-    DatastoreUtilService,
     {provide: HttpDatastore, useClass: HttpDatastoreService}
   ],
   bootstrap: [ MyNgFirstAppComponent ]

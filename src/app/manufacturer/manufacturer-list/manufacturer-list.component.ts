@@ -11,11 +11,9 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
 import { ManufacturerDatasource } from '../manufacturer-datasource';
-import { DataStore } from '../../services/data-store';
-import { Manufacturer } from '../../dto/manufacturer';
+import { DataStore } from 'data-shape';
 import { HttpDatastore } from '../../services/http-datastore';
 import { CommonDataSource } from '../../services/common-datasource';
-import { ManufacturerAttributes } from '../../dto/manufacturer-attributes';
 import { ManufacturerService } from '../manufacturer.service';
 
 @Component({

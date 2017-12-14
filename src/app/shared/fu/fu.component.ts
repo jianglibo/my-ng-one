@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpRequest, HttpHeaders, HttpEventType, HttpResponse } from '@angular/common/http';
-import { Medium } from '../../dto/medium';
+import { Medium } from 'data-shape';
 
 @Component({
   selector: 'app-fu',

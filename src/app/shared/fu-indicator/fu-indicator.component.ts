@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { HttpRequest, HttpHeaders, HttpEventType, HttpResponse, HttpClient } from '@angular/common/http';
-import { Medium } from '../../dto/medium';
-import { ListBody } from '../../dto/list-body';
-import { MediumAttributes } from '../../dto/medium-attributes';
+import { Medium, ListBody, MediumAttributes } from 'data-shape';
 import { UploadService } from '../../upload.service';
 
 @Component({
