@@ -5,16 +5,16 @@ import { NgModule } from '@angular/core';
 
 import { MyNgFirstAppComponent } from './my-ng-first-app';
 
-import { MymModule } from './example/list/mym.module';
 import { TopToolbarModule } from './shared/top-toolbar/top-toolbar.module';
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
-import { ManufacturerModule } from './manufacturer/manufacturer.module';
-import { HttpDatastore } from './services/http-datastore';
 import { DatastoreUtil} from 'data-shape';
 import { HttpDatastoreService } from './services/http-datastore.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { HttpDatastore } from './jsonapi4angular/http-datastore';
+import { JlbfieldsModule } from './jlbfields/jlbfields.module';
+import { Jsonapi4angularModule } from './jsonapi4angular/jsonapi4angular.module';
 
 
 
@@ -25,11 +25,11 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    MymModule,
     TopToolbarModule,
     FormsModule,
-    ManufacturerModule,
-    AppRoutingModule
+    AppRoutingModule,
+    JlbfieldsModule,
+    Jsonapi4angularModule
   ],
   declarations: [ MyNgFirstAppComponent,
     PageNotFoundComponent

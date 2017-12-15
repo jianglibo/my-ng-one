@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpDatastore } from './http-datastore';
 import { HttpClient } from '@angular/common/http';
+import { HttpDatastore } from '../jsonapi4angular/http-datastore';
 
 @Injectable()
 export class HttpDatastoreService extends HttpDatastore {

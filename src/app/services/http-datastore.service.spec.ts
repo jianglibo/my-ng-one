@@ -8,8 +8,8 @@ import {
 import { Observable } from "rxjs/Observable";
 
 import "rxjs/add/operator/reduce";
-import { JsonApiError } from "./http-datastore";
 import { HttpErrorResponse, HttpClient } from "@angular/common/http";
+import { JsonApiError } from '../jsonapi4angular/http-datastore';
 
 import {
   LoginAttempt,

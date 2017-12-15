@@ -1,7 +1,6 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { MyNgFirstAppComponent } from './my-ng-first-app';
 
-import { MymModule } from './example/list/mym.module';
 import { TopToolbarModule } from './shared/top-toolbar/top-toolbar.module';
 
 import { RouterTestingModule } from '@angular/router/testing';
@@ -41,7 +40,7 @@ describe('TopComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ MyNgFirstAppComponent ],
-      imports: [MymModule, TopToolbarModule, RouterTestingModule]
+      imports: [TopToolbarModule, RouterTestingModule]
     })
     .compileComponents();
   }));

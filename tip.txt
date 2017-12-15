@@ -1,0 +1,91 @@
+https://www.tsmean.com/articles/how-to-write-a-typescript-library/angular/
+
+
+Step 1: Create a new project with the AngularCli
+Create a new project. This will be a wrapper and consumer for your library module. I am going to call my library libex (for "library-example", and it was still free on npm) so I call the new project libex-project
+
+ng new libex-project  --prefix libex
+Use your library title instead of libex. Prefix is what you'll write in front of your components, for example if I have a HelloComponent it will be used by libex-hello now.
+
+Step 2: Create a new module
+Your library will reside in it's own module. But first we've got to create said module.
+
+ng g module libex
+Then we cd into that folder.
+
+cd src/app/libex/
+Step 3: Build your library module
+Create components, services etc., e.g.
+
+ng g component hello
+When you're done, you'll have to export the desired components:
+
+@NgModule({
+  imports: [
+    CommonModule
+  ],
+  declarations: [HelloComponent],
+  exports: [HelloComponent]
+})
+You can use your AppModule to test the library:
+
+...
+imports: [
+  BrowserModule,
+  LibexModule
+],
+If you need singleton services, you should modify your library module like so:
+
+@NgModule({
+  providers: [ /* Don't add the services here */ ]
+})
+export class LibexModule {
+  static forRoot() {
+    return {
+      ngModule: LibexModule,
+      providers: [ SomeService ]
+    }
+  }
+}
+and change the imports in AppModule to:
+
+...
+imports: [
+  BrowserModule,
+  LibexModule.forRoot()
+],
+Step 4: Publish
+In your module folder, create a new package.json. You could do this with the npm init command. It should look somewhat like this:
+
+{
+  "name": "libex",
+  "version": "1.0.16",
+  "description": "An Example Library.",
+      ...
+}
+Basically only the library name matters. Also rename libex.module.ts to index.ts since that's the standard name for a main file. Now since we're just publishing the typescript sources (note: that means your library will only work for consumers that also use typescript), we're ready to publish. Just run npm publish! You can also add a .npmignore so you publish only exactly what's needed, it works like .gitignore, just for npm.
+
+What's also an option is to re-export some files from index.ts. For example export * from './hello.service', since then the consumer can just write import { HelloService } from 'libex' instead of import { HelloService } from 'libex/hello.service'. On the other hand, this can also lead to problems, so I usually refrain from it.
+
+In case your library requires other libraries, you can also install them in your library module's folder and to the package.json we've just created. Just run npm install --save something from the library folder.
+
+For subsequent releases, npm version patch (or minor or major) and then npm publish.
+
+Step 5: Consuming your library
+You can either install your library by downloading it from npm with npm i -S your-library or you can use npm link.
+
+To install with npm link, you'll need to run Angular with the --preserve-symlinks option. You can also specify this in your .angular-cli.json:
+
+"defaults": {
+  ...
+  "build": {
+    "preserveSymlinks": true
+  }
+}
+Another thing you'll have to do, starting with Angular 5, is to include your files. So in the tsconfig.json you'll need:
+
+"include": [
+  "src/**/*",
+  “node_modules/your-library/index.ts",
+]
+Well and that's it, now you have your library, which you can develop & test locally and publish to npm!
