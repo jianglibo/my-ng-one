@@ -8,10 +8,10 @@ import { Observable } from 'rxjs/Observable';
 import { Medium, MEDIA_BY_IDS } from 'data-shape';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core/src/debug/debug_node';
-import { FileListMock } from '../../../test/file-list-mock';
-import { FileMock } from '../../../test/file-mock';
 import { UploadService } from '../upload.service';
 import { UploadServiceMock } from '../upload-service-mock';
+import { FileListMock } from '../file-list-mock';
+import { FileMock } from '../file-mock';
 
 @Component({
   // tslint:disable-next-line:component-selector

@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Inject } from "@angular/core";
 import {
   HttpClient,
   HttpRequest,
@@ -11,7 +11,7 @@ import { ListBody, MediumAttributes, Medium } from "data-shape";
 
 @Injectable()
 export class UploadService {
-  constructor(private http: HttpClient) {}
+  constructor(@Inject(HttpClient) private http: HttpClient) {}
 
   upload(file: File, uploadUrl: string): Observable<number | Medium> {
     return Observable.create(function subscribe(observer) {

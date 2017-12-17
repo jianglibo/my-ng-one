@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
+import { Component, OnInit, Input, EventEmitter, Output, Inject } from "@angular/core";
 import { Medium, ListBody, MediumAttributes } from "data-shape";
 import { UploadService } from "../upload.service";
 import { inject } from '@angular/core/testing';
@@ -17,7 +17,7 @@ export class FuIndicatorComponent implements OnInit {
 
   @Output() onFileUploaded = new EventEmitter<Medium>();
 
-  constructor(private uploadService: UploadService) {}
+  constructor(@Inject(UploadService) private uploadService: UploadService) {}
 
   ngOnInit() {
     let that = this;

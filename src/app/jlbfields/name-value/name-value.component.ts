@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
-import { NameValuePair } from '../../jsonapi4angular/dto-util';
+import { NameValuePair } from 'jsonapi4angular/dto-util';
 
 /**
  * the nameValuePairs value will not change after initialization.

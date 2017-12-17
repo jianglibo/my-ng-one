@@ -7,7 +7,7 @@ import { MatFormFieldModule, MatInputModule } from "@angular/material";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { By } from "@angular/platform-browser";
 import { DebugElement } from "@angular/core/src/debug/debug_node";
-import { click } from "../../../test/test-util";
+import { click } from "../test-util";
 
 @Component({
   // tslint:disable-next-line:component-selector

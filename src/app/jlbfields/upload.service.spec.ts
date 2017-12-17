@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 const hc = <HttpClient>{};
 
-fdescribe('UploadServiceService', () => {
+describe('UploadServiceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
