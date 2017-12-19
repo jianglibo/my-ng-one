@@ -6,7 +6,7 @@ import {
   HttpEventType,
   HttpResponse
 } from "@angular/common/http";
-import { Medium } from "data-shape";
+import { Medium } from "data-shape-ng";
 
 @Component({
   selector: "app-fu",

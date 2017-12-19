@@ -1,8 +1,6 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { MyNgFirstAppComponent } from './my-ng-first-app';
 
-import { TopToolbarModule } from './shared/top-toolbar/top-toolbar.module';
-
 import { RouterTestingModule } from '@angular/router/testing';
 
 // describe('Topcom should work.', () => {
@@ -40,7 +38,7 @@ describe('TopComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ MyNgFirstAppComponent ],
-      imports: [TopToolbarModule, RouterTestingModule]
+      imports: [RouterTestingModule]
     })
     .compileComponents();
   }));

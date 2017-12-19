@@ -9,14 +9,13 @@ import { FuIndicatorComponent } from "./fu-indicator.component";
 import { MatProgressBarModule } from "@angular/material";
 import { Injectable, Component, ViewChild } from "@angular/core";
 import { Observable } from "rxjs/Observable";
-import { MEDIA_BY_IDS, Medium } from "data-shape";
+import { MEDIA_BY_IDS, Medium } from "data-shape-ng";
 import { UploadServiceMock } from "../upload-service-mock";
 import {
   HttpClient,
   HttpClientModule,
   HttpHandler
 } from "@angular/common/http";
-import { JlbfieldsModule } from "../jlbfields.module";
 import { UploadService } from "../upload.service";
 
 /* It's not possible to stub the component's HeroDetailService in the providers of the TestBed.configureTestingModule.

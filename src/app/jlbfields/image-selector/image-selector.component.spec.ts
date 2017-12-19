@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testi
 
 import { ImageSelectorComponent } from './image-selector.component';
 import { Injectable, Component, ViewChild, DebugElement } from '@angular/core';
-import { Medium, MEDIA_BY_IDS } from 'data-shape';
+import { Medium, MEDIA_BY_IDS } from 'data-shape-ng';
 import { Observable } from 'rxjs/Observable';
 import { FuComponent } from '../fu/fu.component';
 import { MatProgressBarModule } from '@angular/material';

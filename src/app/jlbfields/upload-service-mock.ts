@@ -1,4 +1,4 @@
-import { MEDIA_BY_IDS, Medium } from 'data-shape';
+import { MEDIA_BY_IDS, Medium } from 'data-shape-ng';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 

@@ -7,7 +7,7 @@ import {
   HttpResponse
 } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
-import { ListBody, MediumAttributes, Medium } from "data-shape";
+import { ListBody, MediumAttributes, Medium } from "data-shape-ng";
 
 @Injectable()
 export class UploadService {

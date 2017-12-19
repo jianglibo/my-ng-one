@@ -9,7 +9,7 @@ import { FuIndicatorComponent } from "./fu-indicator.component";
 import { MatProgressBarModule } from "@angular/material";
 import { Injectable, Component, ViewChild } from "@angular/core";
 import { Observable } from "rxjs/Observable";
-import { MEDIA_BY_IDS, Medium } from "data-shape";
+import { MEDIA_BY_IDS, Medium } from "data-shape-ng";
 import { UploadServiceMock } from "../upload-service-mock";
 import {
   HttpClient,

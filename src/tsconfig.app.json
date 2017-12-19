@@ -9,5 +9,9 @@
   "exclude": [
     "test.ts",
     "**/*.spec.ts"
+  ],
+  "include": [
+    "../node_modules/jsonapi4angular/**/*",
+    "../node_modules/data-shape-ng/**/*"
   ]
 }

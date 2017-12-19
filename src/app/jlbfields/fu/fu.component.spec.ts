@@ -5,7 +5,7 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import { FuIndicatorComponent } from '../fu-indicator/fu-indicator.component';
 import { Injectable, Component, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Medium, MEDIA_BY_IDS } from 'data-shape';
+import { Medium, MEDIA_BY_IDS } from 'data-shape-ng';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core/src/debug/debug_node';
 import { UploadService } from '../upload.service';

@@ -5,16 +5,11 @@ import { NgModule } from '@angular/core';
 
 import { MyNgFirstAppComponent } from './my-ng-first-app';
 
-import { TopToolbarModule } from './shared/top-toolbar/top-toolbar.module';
 import { AppRoutingModule } from './app-routing.module';
-import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
-import { DatastoreUtil} from 'data-shape';
-import { HttpDatastoreService } from './services/http-datastore.service';
+import { DatastoreUtil} from 'data-shape-ng';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { HttpDatastore } from './jsonapi4angular/http-datastore';
 import { JlbfieldsModule } from './jlbfields/jlbfields.module';
-import { Jsonapi4angularModule } from './jsonapi4angular/jsonapi4angular.module';
 
 
 
@@ -25,17 +20,13 @@ import { Jsonapi4angularModule } from './jsonapi4angular/jsonapi4angular.module'
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    TopToolbarModule,
     FormsModule,
     AppRoutingModule,
-    JlbfieldsModule,
-    Jsonapi4angularModule
+    JlbfieldsModule
   ],
   declarations: [ MyNgFirstAppComponent,
-    PageNotFoundComponent
     ],
   providers: [
-    {provide: HttpDatastore, useClass: HttpDatastoreService}
   ],
   bootstrap: [ MyNgFirstAppComponent ]
 })

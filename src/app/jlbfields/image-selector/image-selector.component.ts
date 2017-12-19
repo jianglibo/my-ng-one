@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { Medium } from 'data-shape';
+import { Medium } from 'data-shape-ng';
 import { FuComponent } from '../fu/fu.component';
 
 @Component({

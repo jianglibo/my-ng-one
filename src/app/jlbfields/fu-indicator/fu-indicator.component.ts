@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, Inject } from "@angular/core";
-import { Medium, ListBody, MediumAttributes } from "data-shape";
+import { Medium, ListBody, MediumAttributes } from "data-shape-ng";
 import { UploadService } from "../upload.service";
 import { inject } from '@angular/core/testing';
 
