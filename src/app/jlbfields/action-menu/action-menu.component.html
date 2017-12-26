@@ -1,0 +1,3 @@
+<button md-icon-button *ngFor="let menuItem of filteredItems" [disabled]="menuItem.disabled">
+  <mat-icon class="md-{{menuItem.size}}" aria-label="action menu item icon">{{ menuItem.iconName }}</mat-icon>
+</button>
