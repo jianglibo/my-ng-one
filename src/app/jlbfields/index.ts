@@ -1,3 +1,7 @@
+export { ActionMenuComponent } from './action-menu/action-menu.component';
+export { ActionMenuItem } from './action-menu/action-menu-item';
+export { ActionMenuModule } from './action-menu/action-menu.module';
+
 export { FuModule } from './fu/fu.module';
 export { FuIndicatorModule } from './fu-indicator/fu-indicator.module';
 export { ImageSelectorModule } from './image-selector/image-selector.module';

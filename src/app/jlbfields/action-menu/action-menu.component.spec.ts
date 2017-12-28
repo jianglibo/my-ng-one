@@ -5,7 +5,7 @@ import { ActionMenuModule } from './action-menu.module';
 import { ActionMenuItem } from './action-menu-item';
 import { By } from '@angular/platform-browser';
 
-fdescribe('ActionMenuComponent', () => {
+describe('ActionMenuComponent', () => {
   let component: ActionMenuComponent;
   let fixture: ComponentFixture<ActionMenuComponent>;
 
@@ -28,7 +28,7 @@ fdescribe('ActionMenuComponent', () => {
   });
 
   it('should manual action-item', () => {
-    const ami: ActionMenuItem = new ActionMenuItem("a", "b");
+    const ami: ActionMenuItem = new ActionMenuItem("a", "b", "b");
     const f = (a: number) =>  a + 1;
     expect(typeof f).toBe('function');
 

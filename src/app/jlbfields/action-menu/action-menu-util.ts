@@ -4,9 +4,11 @@ import { SwitchView } from "@angular/common/src/directives/ng_switch";
 
 export class ButtonItem {
   constructor(
-    public disabled: boolean,
+    public id: string,
     public iconName: string,
-    public size: number | string
+    public disabled: boolean,
+    public size: number | string,
+    public labelName: string
   ) {}
 }
 
@@ -93,7 +95,7 @@ export function filterButtons(
       if (bDisable && hideDisabled) {
         return undefined;
       } else {
-        return new ButtonItem(bDisable, itm.iconName, size);
+        return new ButtonItem(itm.id, itm.iconName, bDisable, size, itm.labelName);
       }
     }).filter(btn => btn);
   } else {

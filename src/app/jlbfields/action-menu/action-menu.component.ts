@@ -1,34 +1,59 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ActionMenuItem } from './action-menu-item';
-import { ButtonItem, filterButtons } from './action-menu-util';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { ActionMenuItem } from "./action-menu-item";
+import { ButtonItem, filterButtons } from "./action-menu-util";
+import { unescapeIdentifier } from "@angular/compiler";
 
 // http://materializecss.com/icons.html
 
 @Component({
-  selector: 'app-action-menu',
-  templateUrl: './action-menu.component.html',
-  styleUrls: ['./action-menu.component.css']
+  selector: "app-action-menu",
+  templateUrl: "./action-menu.component.html",
+  styleUrls: ["./action-menu.component.css"]
 })
 export class ActionMenuComponent implements OnInit {
+  @Input() hideDisabled: boolean;
 
-  @Input()
-  hideDisabled: boolean;
+  @Input() maxButtons = 10;
 
-  @Input()
-  itemSize: string | number;
+  @Input() itemSize: string | number;
 
-  @Input()
-  menuItems: ActionMenuItem[];
+  @Input() menuItems: ActionMenuItem[];
 
-  @Input()
-  selectedNumber: number;
+  @Input() selectedNumber: number;
 
-  constructor() { }
+  @Output() menuClicked = new EventEmitter<ActionMenuItem>();
 
-  ngOnInit() {
+  constructor() {}
+
+  ngOnInit() {}
+
+  itemClicked(bi: ButtonItem): void {
+    const founded = this.menuItems.find(mi => {
+      return bi.id === mi.id;
+    });
+    if (founded) {
+      this.menuClicked.emit(founded);
+    }
   }
 
-  get filteredItems():  ButtonItem[] {
-    return filterButtons(this.menuItems, this.itemSize, this.selectedNumber, this.hideDisabled);
+  get displayedItems(): ButtonItem[] {
+    const hi = filterButtons(
+      this.menuItems,
+      this.itemSize,
+      this.selectedNumber,
+      this.hideDisabled
+    );
+    const hif = hi.slice(0, this.maxButtons);
+    return hif ? hif : [];
+  }
+
+  get hiddenItems(): ButtonItem[] {
+    const hi = filterButtons(
+      this.menuItems,
+      this.itemSize,
+      this.selectedNumber,
+      this.hideDisabled);
+    const hif = hi.slice(0, this.maxButtons);
+    return hif ? hif : [];
   }
 }

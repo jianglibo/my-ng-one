@@ -1,7 +1,7 @@
 import { ActionMenuItem } from './action-menu-item';
 import { filterButtons, ButtonItem } from './action-menu-util';
 
-fdescribe('ActionMenuUtil', () => {
+describe('ActionMenuUtil', () => {
 
   it('should react to delete item correctly.', () => {
     const ai = ActionMenuItem.getDeleteItem();

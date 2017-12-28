@@ -1,3 +1,14 @@
-<button md-icon-button *ngFor="let menuItem of filteredItems" [disabled]="menuItem.disabled">
-  <mat-icon class="md-{{menuItem.size}}" aria-label="action menu item icon">{{ menuItem.iconName }}</mat-icon>
+<button mat-icon-button *ngFor="let menuItem of displayedItems" [disabled]="menuItem.disabled" (click)="itemClicked(menuItem)">
+  <mat-icon class="mat-{{menuItem.size}}" aria-label="action menu item icon">{{ menuItem.iconName }}</mat-icon>
 </button>
+ <!--  -->
+<button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="hiddenItems.length > 0">
+  <mat-icon>more_vert</mat-icon>
+</button>
+ <!-- *ngIf="hiddenItems.length > 0" -->
+<mat-menu #menu="matMenu">
+  <button mat-menu-item *ngFor="let menuItem of hiddenItems" [disabled]="menuItem.disabled" (click)="itemClicked(menuItem)">
+    <mat-icon  class="mat-{{menuItem.size}}">{{ menuItem.iconName }}</mat-icon>
+    <span>{{ menuItem.labelName }}</span>
+  </button>
+</mat-menu>

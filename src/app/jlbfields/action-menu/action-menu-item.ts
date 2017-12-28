@@ -1,16 +1,16 @@
 export class ActionMenuItem {
   condition: any[];
 
-  constructor(public id: string, public iconName: string) {}
+  constructor(public id: string, public iconName: string, public labelName: string) {}
 
   static getDeleteItem(): ActionMenuItem {
-    const m = new ActionMenuItem("delete", "delete");
+    const m = new ActionMenuItem("delete", "delete", "delete");
     m.condition = [ActionMenuItem.deleteStateFunction];
     return m;
   }
 
   static getEditItem(): ActionMenuItem {
-    const m = new ActionMenuItem("edit", "edit");
+    const m = new ActionMenuItem("edit", "edit", "edit");
     m.condition = [ActionMenuItem.editStateFunction];
     return m;
   }
