@@ -1,6 +1,6 @@
 {
   "name": "jlbfields",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "common used ui block in my very own projects.",
   "main": "index.ts",
   "scripts": {
