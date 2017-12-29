@@ -47,13 +47,17 @@ export class ActionMenuComponent implements OnInit {
     return hif ? hif : [];
   }
 
+  private get menuItemLength() {
+    return this.menuItems ? this.menuItems.length : 0;
+  }
+
   get hiddenItems(): ButtonItem[] {
     const hi = filterButtons(
       this.menuItems,
       this.itemSize,
       this.selectedNumber,
       this.hideDisabled);
-    const hif = hi.slice(0, this.maxButtons);
+    const hif = hi.slice(this.maxButtons, this.menuItemLength);
     return hif ? hif : [];
   }
 }

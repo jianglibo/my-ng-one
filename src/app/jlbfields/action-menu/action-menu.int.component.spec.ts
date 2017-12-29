@@ -53,7 +53,7 @@ class ActionMenuHostComponent {
     this.clickedMenuItem = am;
   }
 }
-describe("ActionMenu integration", () => {
+fdescribe("ActionMenu integration", () => {
   let component: ActionMenuHostComponent;
   let fixture: ComponentFixture<ActionMenuHostComponent>;
 
@@ -130,18 +130,35 @@ describe("ActionMenu integration", () => {
   it("should show menu switch button.", () => {
     component.menuItems = [
       ActionMenuItem.getDeleteItem(),
-      ActionMenuItem.getEditItem()
+      ActionMenuItem.getEditItem(),
+      ActionMenuItem.getCreateItem()
     ];
     component.itemSize = 36;
-    component.selectedNumber = 1; // should display 2 items. one disabled.
-    component.hideDisabledMenuItem = true;
+    component.selectedNumber = 1; // all items are qualified.
+    // component.hideDisabledMenuItem = true; // unqualified item shouldn't be rendered. so there are 2 item.
+    component.maxButtons = 1; // one is shown, 2 are move to menu.
+    fixture.detectChanges();
+
+    expect(component.actionMenuComponent.maxButtons).toBe(1, "maxButtons should be 1.");
+    expect(component.actionMenuComponent.displayedItems.length).toBe(1, "displayedItems number should be 1.");
+    expect(component.actionMenuComponent.hiddenItems.length).toBe(2, "hiddenItems number should be 2.");
+  });
+
+  it("should hide menu switch button.", () => {
+    component.menuItems = [
+      ActionMenuItem.getDeleteItem(),
+      ActionMenuItem.getEditItem(),
+      ActionMenuItem.getCreateItem()
+    ];
+    component.itemSize = 36;
+    component.selectedNumber = 0; // should only display create item.
+    component.hideDisabledMenuItem = true; // delete and edit item are removed.
     component.maxButtons = 1;
     fixture.detectChanges();
 
     expect(component.actionMenuComponent.maxButtons).toBe(1, "maxButtons should be 1.");
     expect(component.actionMenuComponent.displayedItems.length).toBe(1, "displayedItems number should be 1.");
-    expect(component.actionMenuComponent.hiddenItems.length).toBe(1, "hiddenItems number should be 1.");
-
+    expect(component.actionMenuComponent.hiddenItems.length).toBe(0, "hiddenItems number should be 2.");
   });
 
   it("should call itemClicked method when clicked.",  fakeAsync(() => {

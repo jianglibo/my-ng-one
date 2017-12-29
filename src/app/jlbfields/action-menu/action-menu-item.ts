@@ -15,6 +15,12 @@ export class ActionMenuItem {
     return m;
   }
 
+  static getCreateItem(): ActionMenuItem {
+    const m = new ActionMenuItem("create", "create", "create");
+    m.condition = [];
+    return m;
+  }
+
   static deleteStateFunction = (n: number) => {
     if (n === 0) {
       return true;
